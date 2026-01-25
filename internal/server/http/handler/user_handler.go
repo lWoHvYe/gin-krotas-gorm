@@ -42,3 +42,17 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, u)
 }
+
+func (h *UserHandler) UpdateRoleById(c *gin.Context) {
+	var req pb.UpdateRoleRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	u, err := h.svc.UpdateRoleByID(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, u)
+}

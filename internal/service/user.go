@@ -2,9 +2,8 @@ package service
 
 import (
 	"context"
-	"helloworld-go/internal/biz/user"
-
 	pb "helloworld-go/api/user/v1"
+	"helloworld-go/internal/biz/user"
 )
 
 type UserService struct {
@@ -18,7 +17,7 @@ func NewUserService(repo user.UserRepository) *UserService {
 
 func (s *UserService) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.UserReply, error) {
 	u := &user.User{Name: req.GetName()}
-	if err := s.repo.Save(ctx, u); err != nil {
+	if err := s.repo.Create(ctx, u); err != nil {
 		return nil, err
 	}
 	return &pb.UserReply{Id: u.ID, Name: u.Name, RoleName: "admin"}, nil
@@ -33,5 +32,5 @@ func (s *UserService) GetByID(ctx context.Context, req *pb.SingleIDRequest) (*pb
 func (s *UserService) UpdateRoleByID(ctx context.Context, req *pb.UpdateRoleRequest) (*pb.SimpleResponse, error) {
 	u := user.User{ID: req.Id, RoleName: req.RoleName}
 	err := s.repo.UpdateRoleByID(ctx, u)
-	return &pb.SimpleResponse{}, err
+	return &pb.SimpleResponse{Msg: req.RoleName}, err
 }
