@@ -2,34 +2,51 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"helloworld-go/internal/bootstrap"
-	"log"
-	"net"
+	"os"
 
-	"google.golang.org/grpc"
+	"github.com/go-kratos/kratos/v2/log"
+
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
 )
 
+// go build -ldflags "-X main.Version=x.y.z"
+var (
+	// Name is the name of the compiled software.
+	Name string
+	// Version is the version of the compiled software.
+	Version string
+	// flagconf is the config flag.
+	flagconf string
+
+	id, _ = os.Hostname()
+)
+
+func init() {
+	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
+}
+
 func main() {
-	ginEngine, grpcServer, err := bootstrap.Build()
+	flag.Parse()
+	logger := log.With(log.NewStdLogger(os.Stdout),
+		"ts", log.DefaultTimestamp,
+		"caller", log.DefaultCaller,
+		"service.id", id,
+		"service.name", Name,
+		"service.version", Version,
+		"trace.id", tracing.TraceID(),
+		"span.id", tracing.SpanID(),
+	)
+
+	app, cleanup, err := bootstrap.InitApp(flagconf, logger)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+	defer cleanup()
 
-	// 启动 HTTP
-	go func() {
-		if err := ginEngine.Run(":8080"); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
-	// 启动 gRPC
-	lis, _ := net.Listen("tcp", ":50051")
-	grpcSrv := grpc.NewServer()
-	grpcSrv.RegisterService(&grpcServer.ServiceDesc, grpcServer)
-	fmt.Println("gRPC server running on :50051")
-	err = grpcSrv.Serve(lis)
-	if err != nil {
+	// start and wait for stop signal
+	if err := app.Run(); err != nil {
 		panic(err)
 	}
 }

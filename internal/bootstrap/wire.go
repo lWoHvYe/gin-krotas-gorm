@@ -1,33 +1,29 @@
-// internal/bootstrap/wire.go
+//go:build wireinject
+// +build wireinject
+
+// The build tag makes sure the stub is not built in the final build.
 package bootstrap
 
 import (
-	"helloworld-go/internal/data/db"
-	"helloworld-go/internal/data/persistence"
-	grpcTransport "helloworld-go/internal/server/grpc"
-	httpServerHandler "helloworld-go/internal/server/http/handler"
-	httpServerRouter "helloworld-go/internal/server/http/router"
-	userService "helloworld-go/internal/service/user"
+	"helloworld-go/internal/biz"
+	"helloworld-go/internal/data"
+	"helloworld-go/internal/pkg"
+	"helloworld-go/internal/server"
+	"helloworld-go/internal/service"
 
-	"github.com/gin-gonic/gin"
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/google/wire"
 )
 
-func Build() (*gin.Engine, *grpcTransport.UserServer, error) {
-	gormDB, err := db.NewDB()
-	if err != nil {
-		return nil, nil, err
-	}
-
-	userRepo := persistence.NewUserRepo(gormDB)
-	userSvc := userService.NewUserService(userRepo)
-
-	// HTTP
-	ginEngine := gin.Default()
-	userHandler := httpServerHandler.NewUserHandler(userSvc)
-	httpServerRouter.RegisterUserRoutes(ginEngine, userHandler)
-
-	// gRPC
-	grpcServer := grpcTransport.NewUserServer(userSvc)
-
-	return ginEngine, grpcServer, nil
+func InitApp(string, log.Logger) (*kratos.App, func(), error) {
+	wire.Build(
+		biz.BizSet,
+		pkg.InfraSet,
+		data.RepoSet,
+		service.ServiceSet,
+		server.TransportSet,
+		NewApp,
+	)
+	return nil, nil, nil
 }

@@ -1,6 +1,10 @@
 package service
 
-import "github.com/google/wire"
+import (
+	userService "helloworld-go/internal/service/user"
+
+	"github.com/google/wire"
+)
 
 // ProviderSet is service providers.
-var ProviderSet = wire.NewSet(NewGreeterService)
+var ServiceSet = wire.NewSet(NewGreeterService, userService.NewUserService)

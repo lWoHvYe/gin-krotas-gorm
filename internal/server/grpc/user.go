@@ -1,22 +1,19 @@
-// internal/transport/grpc/user_server.go
+// internal/transport/grpc/user.go
 package grpc
 
 import (
 	"context"
 	pb "helloworld-go/api/user/v1"
 	service "helloworld-go/internal/service/user"
-
-	grpc "google.golang.org/grpc"
 )
 
 type UserServer struct {
 	pb.UnimplementedUserServer
-	svc         *service.UserService
-	ServiceDesc grpc.ServiceDesc
+	svc *service.UserService
 }
 
 func NewUserServer(svc *service.UserService) *UserServer {
-	return &UserServer{svc: svc, ServiceDesc: pb.User_ServiceDesc}
+	return &UserServer{svc: svc}
 }
 
 func (s *UserServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.UserReply, error) {

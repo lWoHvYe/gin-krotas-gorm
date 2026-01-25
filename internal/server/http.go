@@ -1,32 +1,44 @@
 package server
 
 import (
-	v1 "helloworld-go/api/helloworld/v1"
 	"helloworld-go/internal/conf"
+	httpServerHandler "helloworld-go/internal/server/http/handler"
+	"helloworld-go/internal/server/http/router"
 	"helloworld-go/internal/service"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/recovery"
-	"github.com/go-kratos/kratos/v2/transport/http"
+	khttp "github.com/go-kratos/kratos/v2/transport/http"
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *http.Server {
-	var opts = []http.ServerOption{
-		http.Middleware(
-			recovery.Recovery(),
-		),
+func NewHTTPServer(cfg *conf.Bootstrap,
+	userHandler *httpServerHandler.UserHandler,
+	greeter *service.GreeterService, logger log.Logger) *khttp.Server {
+
+	r := gin.New()
+	r.Use(gin.Recovery())
+	// 注册router
+	router.RegisterUserRoutes(r, userHandler)
+
+	var opts = []khttp.ServerOption{
+		//khttp.Handler(r),
+		// 手动实现 Option 逻辑，这等同于调用 http.Handler(g)
+		func(s *khttp.Server) {
+			s.HandlePrefix("/", r) // Kratos 新版底层通过 HandlePrefix 挂载
+		},
 	}
-	if c.Http.Network != "" {
-		opts = append(opts, http.Network(c.Http.Network))
+	if cfg.Server.Http.Network != "" {
+		opts = append(opts, khttp.Network(cfg.Server.Http.Network))
 	}
-	if c.Http.Addr != "" {
-		opts = append(opts, http.Address(c.Http.Addr))
+	if cfg.Server.Http.Addr != "" {
+		opts = append(opts, khttp.Address(cfg.Server.Http.Addr))
 	}
-	if c.Http.Timeout != nil {
-		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
+	if cfg.Server.Http.Timeout != nil {
+		opts = append(opts, khttp.Timeout(cfg.Server.Http.Timeout.AsDuration()))
 	}
-	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+
+	srv := khttp.NewServer(opts...)
+	//v1.RegisterGreeterHTTPServer(srv, greeter)
 	return srv
 }
