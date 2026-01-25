@@ -7,8 +7,8 @@ package main
 
 import (
 	"helloworld-go/internal/biz"
-	"helloworld-go/internal/conf"
 	"helloworld-go/internal/data"
+	"helloworld-go/internal/pkg"
 	"helloworld-go/internal/server"
 	"helloworld-go/internal/service"
 
@@ -18,7 +18,6 @@ import (
 )
 
 // wireApp init kratos application.
-func wireApp(*conf.Server, *conf.Data, log.Logger) (*kratos.App, func(), error) {
-	panic(wire.Build(
-		server.TransportSet, data.RepoSet, biz.BizSet, service.ServiceSet, newApp))
+func wireApp(string, log.Logger) (*kratos.App, func(), error) {
+	panic(wire.Build(pkg.InfraSet, server.TransportSet, data.RepoSet, biz.BizSet, service.ServiceSet, newApp))
 }
