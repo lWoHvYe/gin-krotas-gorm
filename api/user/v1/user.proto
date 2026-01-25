@@ -11,9 +11,25 @@ option java_package = "dev.kratos.api.user.v1";
 option java_outer_classname = "UserProtoV1";
 
 service User {
-  rpc Register (RegisterRequest) returns (UserReply);
-  rpc GetByID (SingleIDRequest) returns (UserReply);
-  rpc UpdateRoleByID (SingleIDRequest) returns (SimpleResponse);
+  rpc Register (RegisterRequest) returns (UserReply) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "*"
+    };
+  }
+
+  rpc GetByID (SingleIDRequest) returns (UserReply) {
+    option (google.api.http) = {
+      get: "/v1/users/{id}"
+    };
+  }
+
+  rpc UpdateRoleByID (UpdateRoleRequest) returns (SimpleResponse) {
+    option (google.api.http) = {
+      put: "/v1/users/{id}/role"
+      body: "*"
+    };
+  }
 }
 
 message RegisterRequest {
@@ -22,6 +38,11 @@ message RegisterRequest {
 
 message SingleIDRequest {
   int64 id = 1;
+}
+
+message UpdateRoleRequest {
+  int64 id = 1;
+  string role_name = 2;
 }
 
 message SimpleResponse {

@@ -4,7 +4,6 @@ import (
 	HelloWorldV1 "helloworld-go/api/helloworld/v1"
 	UserAPIV1 "helloworld-go/api/user/v1"
 	"helloworld-go/internal/conf"
-	grpcPkg "helloworld-go/internal/server/grpc"
 	"helloworld-go/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -15,7 +14,7 @@ import (
 // NewGRPCServer new a gRPC server.
 func NewGRPCServer(cfg *conf.Bootstrap,
 	greeter *service.GreeterService,
-	user *grpcPkg.UserServer, logger log.Logger) *grpc.Server {
+	user *service.UserService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),

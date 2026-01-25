@@ -2,6 +2,7 @@
 package user
 
 type User struct {
-	ID   int64
-	Name string
+	ID       int64
+	Name     string
+	RoleName string
 }

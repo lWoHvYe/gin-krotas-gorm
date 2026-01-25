@@ -2,8 +2,7 @@ package handler
 
 import (
 	pb "helloworld-go/api/user/v1"
-	service "helloworld-go/internal/service/user"
-
+	"helloworld-go/internal/service"
 	"net/http"
 	"strconv"
 

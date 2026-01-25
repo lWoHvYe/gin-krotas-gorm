@@ -30,6 +30,8 @@ func (s *UserService) GetByID(ctx context.Context, req *pb.SingleIDRequest) (*pb
 	}
 	return &pb.UserReply{Id: u.ID, Name: u.Name}, nil
 }
-func (s *UserService) UpdateRoleByID(ctx context.Context, req *pb.SingleIDRequest) (*pb.SimpleResponse, error) {
-	return &pb.SimpleResponse{}, nil
+func (s *UserService) UpdateRoleByID(ctx context.Context, req *pb.UpdateRoleRequest) (*pb.SimpleResponse, error) {
+	u := user.User{ID: req.Id, RoleName: req.RoleName}
+	err := s.repo.UpdateRoleByID(ctx, u)
+	return &pb.SimpleResponse{}, err
 }

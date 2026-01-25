@@ -3,8 +3,7 @@
 
 openapi: 3.0.3
 info:
-    title: Greeter API
-    description: The greeting service definition.
+    title: ""
     version: 0.0.1
 paths:
     /helloworld/{name}:
@@ -26,6 +25,66 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/helloworld.v1.HelloReply'
+    /v1/users:
+        post:
+            tags:
+                - User
+            operationId: User_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.RegisterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.UserReply'
+    /v1/users/{id}:
+        get:
+            tags:
+                - User
+            operationId: User_GetByID
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.UserReply'
+    /v1/users/{id}/role:
+        put:
+            tags:
+                - User
+            operationId: User_UpdateRoleByID
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.UpdateRoleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.SimpleResponse'
 components:
     schemas:
         helloworld.v1.HelloReply:
@@ -34,5 +93,33 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
+        user.v1.RegisterRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+        user.v1.SimpleResponse:
+            type: object
+            properties:
+                msg:
+                    type: string
+        user.v1.UpdateRoleRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                roleName:
+                    type: string
+        user.v1.UserReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                roleName:
+                    type: string
 tags:
     - name: Greeter
+      description: The greeting service definition.
+    - name: User

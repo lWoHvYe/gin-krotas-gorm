@@ -1,7 +1,6 @@
 package server
 
 import (
-	grpcTransport "helloworld-go/internal/server/grpc"
 	httpServerHandler "helloworld-go/internal/server/http/handler"
 
 	"github.com/google/wire"
@@ -9,4 +8,4 @@ import (
 
 // ProviderSet is server providers.
 var TransportSet = wire.NewSet(NewGRPCServer, NewHTTPServer,
-	grpcTransport.NewUserServer, httpServerHandler.NewUserHandler)
+	httpServerHandler.NewUserHandler)

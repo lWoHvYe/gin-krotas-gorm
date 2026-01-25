@@ -3,8 +3,9 @@ package persistence
 
 import (
 	"context"
-	"gorm.io/gorm"
 	"helloworld-go/internal/biz/user"
+
+	"gorm.io/gorm"
 )
 
 type UserRepo struct {
@@ -25,4 +26,8 @@ func (r *UserRepo) FindByID(ctx context.Context, id int64) (*user.User, error) {
 		return nil, err
 	}
 	return &u, nil
+}
+
+func (r *UserRepo) UpdateRoleByID(ctx context.Context, t user.User) error {
+	return r.db.WithContext(ctx).Where("id = ?", t.ID).Update("role_name", t.RoleName).Error
 }

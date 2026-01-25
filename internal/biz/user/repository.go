@@ -11,4 +11,5 @@ type Repository[T any] interface {
 
 type UserRepository interface {
 	Repository[User]
+	UpdateRoleByID(ctx context.Context, t User) error
 }

@@ -5,12 +5,16 @@ import (
 	"context"
 	pb "helloworld-go/api/user/v1"
 	"helloworld-go/internal/biz/user"
-	service "helloworld-go/internal/service/user"
-
+	"helloworld-go/internal/service"
 	"testing"
 )
 
 type MockUserRepo struct{}
+
+func (r *MockUserRepo) UpdateRoleByID(ctx context.Context, t user.User) error {
+	//TODO implement me
+	panic("implement me")
+}
 
 func (r *MockUserRepo) Save(ctx context.Context, u *user.User) error {
 	u.ID = 1
