@@ -6,7 +6,7 @@ import (
 	"helloworld-go/internal/data/persistence"
 	grpcTransport "helloworld-go/internal/server/grpc"
 	httpTransport "helloworld-go/internal/server/http"
-	"helloworld-go/internal/service/user"
+	userService "helloworld-go/internal/service/user"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +18,7 @@ func Build() (*gin.Engine, *grpcTransport.Server, error) {
 	}
 
 	userRepo := persistence.NewUserRepo(gormDB)
-	userSvc := user.NewService(userRepo)
+	userSvc := userService.NewService(userRepo)
 
 	// HTTP
 	ginEngine := gin.Default()

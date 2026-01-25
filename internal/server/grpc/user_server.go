@@ -3,19 +3,19 @@ package grpc
 
 import (
 	"context"
-	pb "helloworld-go/api/user-service/v1"
-	"helloworld-go/internal/service/user"
+	pb "helloworld-go/api/user/v1"
+	service "helloworld-go/internal/service/user"
 
 	grpc "google.golang.org/grpc"
 )
 
 type Server struct {
 	pb.UnimplementedUserServiceServer
-	svc         *user.Service
+	svc         *service.Service
 	ServiceDesc grpc.ServiceDesc
 }
 
-func NewServer(svc *user.Service) *Server {
+func NewServer(svc *service.Service) *Server {
 	return &Server{svc: svc, ServiceDesc: pb.UserService_ServiceDesc}
 }
 

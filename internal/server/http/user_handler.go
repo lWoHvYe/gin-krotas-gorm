@@ -2,7 +2,7 @@
 package http
 
 import (
-	"helloworld-go/internal/service/user"
+	service "helloworld-go/internal/service/user"
 	"net/http"
 	"strconv"
 
@@ -10,10 +10,10 @@ import (
 )
 
 type Handler struct {
-	svc *user.Service
+	svc *service.Service
 }
 
-func NewHandler(svc *user.Service) *Handler {
+func NewHandler(svc *service.Service) *Handler {
 	return &Handler{svc: svc}
 }
 

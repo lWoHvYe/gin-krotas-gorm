@@ -1,5 +1,5 @@
 // internal/application/user/service.go
-package user
+package service
 
 import (
 	"context"
