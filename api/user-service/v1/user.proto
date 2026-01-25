@@ -12,18 +12,24 @@ option java_outer_classname = "UserProtoV1";
 
 service UserService {
   rpc Register (RegisterRequest) returns (UserReply);
-  rpc GetByID (GetByIDRequest) returns (UserReply);
+  rpc GetByID (SingleIDRequest) returns (UserReply);
+  rpc UpdateRoleByID (SingleIDRequest) returns (SimpleResponse);
 }
 
 message RegisterRequest {
   string name = 1;
 }
 
-message GetByIDRequest {
+message SingleIDRequest {
   int64 id = 1;
+}
+
+message SimpleResponse {
+  string msg = 1;
 }
 
 message UserReply {
   int64 id = 1;
   string name = 2;
+  string role_name = 3;
 }

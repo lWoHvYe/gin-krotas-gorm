@@ -7,7 +7,8 @@ import (
 )
 
 func NewDB() (*gorm.DB, error) {
-	db, err := gorm.Open(mysql.Open("test.db"), &gorm.Config{})
+	dsn := "root:root@tcp(10.211.55.29:3306)/unicorn?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}

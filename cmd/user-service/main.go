@@ -2,7 +2,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"helloworld-go/internal/bootstrap"
 	"log"
@@ -29,5 +28,8 @@ func main() {
 	grpcSrv := grpc.NewServer()
 	grpcSrv.RegisterService(&grpcServer.ServiceDesc, grpcServer)
 	fmt.Println("gRPC server running on :50051")
-	grpcSrv.Serve(lis)
+	err = grpcSrv.Serve(lis)
+	if err != nil {
+		panic(err)
+	}
 }
