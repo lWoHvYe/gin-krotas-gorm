@@ -1,36 +1,30 @@
-// internal/transport/http/user_handler.go
-package http
+package handler
 
 import (
+	pb "helloworld-go/api/user/v1"
 	service "helloworld-go/internal/service/user"
+
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-type Handler struct {
-	svc *service.Service
+type UserHandler struct {
+	svc *service.UserService
 }
 
-func NewHandler(svc *service.Service) *Handler {
-	return &Handler{svc: svc}
+func NewUserHandler(svc *service.UserService) *UserHandler {
+	return &UserHandler{svc: svc}
 }
 
-func (h *Handler) RegisterRoutes(r *gin.Engine) {
-	r.POST("/users", h.Create)
-	r.GET("/users/:id", h.GetByID)
-}
-
-func (h *Handler) Create(c *gin.Context) {
-	var req struct {
-		Name string `json:"name"`
-	}
+func (h *UserHandler) Create(c *gin.Context) {
+	var req pb.RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	u, err := h.svc.Register(c.Request.Context(), req.Name)
+	u, err := h.svc.Register(c.Request.Context(), &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -38,10 +32,11 @@ func (h *Handler) Create(c *gin.Context) {
 	c.JSON(http.StatusOK, u)
 }
 
-func (h *Handler) GetByID(c *gin.Context) {
+func (h *UserHandler) GetByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
-	u, err := h.svc.GetByID(c.Request.Context(), id)
+	var req = &pb.SingleIDRequest{Id: id}
+	u, err := h.svc.GetByID(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return

@@ -10,7 +10,7 @@ option java_multiple_files = true;
 option java_package = "dev.kratos.api.user.v1";
 option java_outer_classname = "UserProtoV1";
 
-service UserService {
+service User {
   rpc Register (RegisterRequest) returns (UserReply);
   rpc GetByID (SingleIDRequest) returns (UserReply);
   rpc UpdateRoleByID (SingleIDRequest) returns (SimpleResponse);

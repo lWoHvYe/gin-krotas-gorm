@@ -9,28 +9,28 @@ import (
 	grpc "google.golang.org/grpc"
 )
 
-type Server struct {
-	pb.UnimplementedUserServiceServer
-	svc         *service.Service
+type UserServer struct {
+	pb.UnimplementedUserServer
+	svc         *service.UserService
 	ServiceDesc grpc.ServiceDesc
 }
 
-func NewServer(svc *service.Service) *Server {
-	return &Server{svc: svc, ServiceDesc: pb.UserService_ServiceDesc}
+func NewUserServer(svc *service.UserService) *UserServer {
+	return &UserServer{svc: svc, ServiceDesc: pb.User_ServiceDesc}
 }
 
-func (s *Server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.UserReply, error) {
-	u, err := s.svc.Register(ctx, req.Name)
+func (s *UserServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.UserReply, error) {
+	u, err := s.svc.Register(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.UserReply{Id: u.ID, Name: u.Name}, nil
+	return &pb.UserReply{Id: u.Id, Name: u.Name}, nil
 }
 
-func (s *Server) GetByID(ctx context.Context, req *pb.SingleIDRequest) (*pb.UserReply, error) {
-	u, err := s.svc.GetByID(ctx, req.Id)
+func (s *UserServer) GetByID(ctx context.Context, req *pb.SingleIDRequest) (*pb.UserReply, error) {
+	u, err := s.svc.GetByID(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	return &pb.UserReply{Id: u.ID, Name: u.Name}, nil
+	return &pb.UserReply{Id: u.Id, Name: u.Name}, nil
 }
