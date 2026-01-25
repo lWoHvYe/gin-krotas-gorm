@@ -3,8 +3,10 @@ package tests
 
 import (
 	"context"
+	pb "helloworld-go/api/user/v1"
 	"helloworld-go/internal/biz/user"
 	service "helloworld-go/internal/service/user"
+
 	"testing"
 )
 
@@ -21,10 +23,10 @@ func (r *MockUserRepo) FindByID(ctx context.Context, id int64) (*user.User, erro
 
 func TestRegister(t *testing.T) {
 	repo := &MockUserRepo{}
-	svc := service.NewService(repo)
+	svc := service.NewUserService(repo)
 
-	u, err := svc.Register(context.Background(), "Alice")
-	if err != nil || u.ID != 1 {
+	u, err := svc.Register(context.Background(), &pb.RegisterRequest{Name: "Alice"})
+	if err != nil || u.Id != 1 {
 		t.Fatal("Register failed")
 	}
 }

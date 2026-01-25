@@ -21,13 +21,7 @@ func NewHTTPServer(cfg *conf.Bootstrap,
 	// 注册router
 	router.RegisterUserRoutes(r, userHandler)
 
-	var opts = []khttp.ServerOption{
-		//khttp.Handler(r),
-		// 手动实现 Option 逻辑，这等同于调用 http.Handler(g)
-		func(s *khttp.Server) {
-			s.HandlePrefix("/", r) // Kratos 新版底层通过 HandlePrefix 挂载
-		},
-	}
+	var opts []khttp.ServerOption
 	if cfg.Server.Http.Network != "" {
 		opts = append(opts, khttp.Network(cfg.Server.Http.Network))
 	}
@@ -39,6 +33,7 @@ func NewHTTPServer(cfg *conf.Bootstrap,
 	}
 
 	srv := khttp.NewServer(opts...)
+	srv.HandlePrefix("/", r) // 这里的 r 是 *gin.Engine
 	//v1.RegisterGreeterHTTPServer(srv, greeter)
 	return srv
 }
