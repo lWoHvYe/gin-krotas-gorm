@@ -17,13 +17,12 @@ import (
 )
 
 func InitApp(string, log.Logger) (*kratos.App, func(), error) {
-	wire.Build(
+	panic(wire.Build(
 		biz.BizSet,
 		pkg.InfraSet,
 		data.RepoSet,
 		service.ServiceSet,
 		server.TransportSet,
 		NewApp,
-	)
-	return nil, nil, nil
+	))
 }
