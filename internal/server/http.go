@@ -4,8 +4,10 @@ import (
 	"helloworld-go/internal/conf"
 	httpServerHandler "helloworld-go/internal/server/http/handler"
 	"helloworld-go/internal/server/http/router"
+	"helloworld-go/internal/server/middleware"
 	"helloworld-go/internal/service"
 
+	"github.com/casbin/casbin/v3"
 	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/log"
 	khttp "github.com/go-kratos/kratos/v2/transport/http"
@@ -14,12 +16,19 @@ import (
 // NewHTTPServer new an HTTP server.
 func NewHTTPServer(cfg *conf.Bootstrap,
 	userHandler *httpServerHandler.UserHandler,
+	enforcer *casbin.Enforcer,
 	greeter *service.GreeterService, logger log.Logger) *khttp.Server {
 
 	r := gin.New()
 	r.Use(gin.Recovery())
-	// 注册router
-	router.RegisterUserRoutes(r, userHandler)
+
+	public := r.Group("/api")
+	private := r.Group("/api")
+	private.Use(middleware.JWTAuth())
+
+	// 注册Router
+	userRouter := router.NewUserRouter(enforcer, userHandler)
+	userRouter.RegisterUserRoutes(private, public)
 
 	var opts []khttp.ServerOption
 	if cfg.Server.Http.Network != "" {

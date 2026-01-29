@@ -4,12 +4,15 @@ package tests
 import (
 	"context"
 	pb "helloworld-go/api/user/v1"
+	"helloworld-go/internal/biz"
 	"helloworld-go/internal/biz/user"
 	"helloworld-go/internal/service"
 	"testing"
 )
 
-type MockUserRepo struct{}
+type MockUserRepo struct {
+	biz.RepositoryImpl[user.User]
+}
 
 func (r *MockUserRepo) UpdateRoleByID(ctx context.Context, t user.User) error {
 	//TODO implement me
@@ -21,7 +24,7 @@ func (r *MockUserRepo) Save(ctx context.Context, u *user.User) error {
 	return nil
 }
 
-func (r *MockUserRepo) FindByID(ctx context.Context, id int64) (*user.User, error) {
+func (r *MockUserRepo) FindByID(ctx context.Context, id any) (*user.User, error) {
 	return &user.User{ID: id, Name: "mock"}, nil
 }
 
