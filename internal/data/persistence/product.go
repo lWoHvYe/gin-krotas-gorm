@@ -37,15 +37,14 @@ func (p *ProductRepo) GetProductByPage(ctx context.Context, Page int, PageSize i
 		FindByPage(offset, PageSize)
 }
 
-//func (p *ProductRepo) GetProductHasStock(ctx context.Context, productId int64) (bool, error) {
-//	q := product.Use(p.db)
-//	spu, err := q.ProductSpu.
-//		WithContext(ctx).
-//		Preload(q.ProductSpu.Skus q.ProductSku.Stock.Gt(0)).
-//		Where(q.ProductSpu.ID.Eq(productId)).
-//		First()
-//
-//}
+func (p *ProductRepo) GetProductHasStock(ctx context.Context, productId int64) (*model.ProductSpu, error) {
+	q := product.Use(p.db)
+	return q.ProductSpu.
+		WithContext(ctx).
+		Preload(q.ProductSpu.Skus.Where(product.ProductSku.Stock.Gt(0))).
+		Where(q.ProductSpu.ID.Eq(productId)).
+		First()
+}
 
 func (p *ProductRepo) GetBestProduct(ctx context.Context) ([]product.SpuWithMinPrice, error) {
 	q := product.Use(p.db)
