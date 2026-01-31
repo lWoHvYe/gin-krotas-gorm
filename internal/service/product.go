@@ -2,24 +2,24 @@ package service
 
 import (
 	"context"
-	"helloworld-go/internal/biz/product"
+	"helloworld-go/internal/data/persistence"
 
 	pb "helloworld-go/api/product/v1"
 )
 
 type ProductService struct {
 	pb.UnimplementedProductServer
-	productRepo product.ProductRepository
+	repo *persistence.ProductRepo
 }
 
-func NewProductService(repo product.ProductRepository) *ProductService {
-	return &ProductService{productRepo: repo}
+func NewProductService(repo *persistence.ProductRepo) *ProductService {
+	return &ProductService{repo: repo}
 }
 
 func (s *ProductService) GetProductDetail(ctx context.Context, req *pb.GetProductDetailReq) (*pb.GetProductDetailReply, error) {
 	// 1. 调用 Biz/Data 层获取数据 (预加载 Skus)
 	// 假设 repo.GetProductWithSkus 内部使用了 .Preload("Skus")
-	spu, err := s.productRepo.GetProductWithSkus(ctx, uint(req.Id))
+	spu, err := s.repo.GetProductWithSkus(ctx, int64(req.Id))
 	if err != nil {
 		return nil, err
 	}
@@ -30,8 +30,8 @@ func (s *ProductService) GetProductDetail(ctx context.Context, req *pb.GetProduc
 		Name:        spu.Name,
 		Description: spu.Description,
 		MainImage:   spu.MainImage,
-		CategoryId:  uint32(spu.CategoryId),
-		BrandId:     uint32(spu.BrandId),
+		CategoryId:  uint32(spu.CategoryID),
+		BrandId:     uint32(spu.BrandID),
 	}
 
 	// 3. 循环转换子列表 SKU

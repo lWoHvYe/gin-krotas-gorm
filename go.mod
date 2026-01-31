@@ -16,6 +16,7 @@ require (
 	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.11
 	gorm.io/driver/mysql v1.6.0
+	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.31.1
 )
 
@@ -87,8 +88,10 @@ require (
 	golang.org/x/tools v0.40.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260122232226-8e98ce8d340d // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gorm.io/datatypes v1.2.4 // indirect
 	gorm.io/driver/postgres v1.6.0 // indirect
 	gorm.io/driver/sqlserver v1.6.3 // indirect
+	gorm.io/hints v1.1.0 // indirect
 	gorm.io/plugin/dbresolver v1.6.2 // indirect
 	modernc.org/libc v1.67.4 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
