@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package api.product.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "your-project/api/product/v1;v1";
+
+service Product {
+  // 获取商品详情（包含 SPU 和 SKU 列表）
+  rpc GetProductDetail (GetProductDetailReq) returns (GetProductDetailReply) {}
+}
+
+message GetProductDetailReq {
+  uint32 id = 1 [(validate.rules).uint32.gt = 0];
+}
+
+// SKU 详细信息
+message SkuInfo {
+  uint32 id = 1;
+  string sku_code = 2;
+  string attr_value = 3; // 规格组合 JSON，如 {"颜色": "黑色", "内存": "256G"}
+  double price = 4;
+  int32 stock = 5;
+}
+
+// 商品详情完整响应
+message GetProductDetailReply {
+  uint32 id = 1;
+  string name = 2;
+  string description = 3;
+  string main_image = 4;
+  uint32 category_id = 5;
+  uint32 brand_id = 6;
+  repeated SkuInfo skus = 7; // 关联的 SKU 列表
+}

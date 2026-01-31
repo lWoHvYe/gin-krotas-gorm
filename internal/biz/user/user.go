@@ -1,8 +1,10 @@
-// internal/domain/user/entity.go
+// internal/domain/user/user.go
 package user
 
+import "gorm.io/gorm"
+
 type User struct {
-	ID       int64
+	gorm.Model
 	Name     string
 	RoleName string
 }

@@ -8,4 +8,4 @@ import (
 
 // ProviderSet is server providers.
 var TransportSet = wire.NewSet(NewGRPCServer, NewHTTPServer,
-	httpServerHandler.NewUserHandler)
+	httpServerHandler.NewUserHandler, httpServerHandler.NewProductHandler)

@@ -18,7 +18,7 @@ func NewUserRouter(e *casbin.Enforcer, h *handler.UserHandler) *UserRouter {
 	return &UserRouter{enforcer: e, userHandler: h}
 }
 
-func (r *UserRouter) RegisterUserRoutes(private *gin.RouterGroup, public *gin.RouterGroup) {
+func (r *UserRouter) InitUserRoutes(private *gin.RouterGroup, public *gin.RouterGroup) {
 	// 不需要登录的公开接口
 	publicGroup := public.Group("base")
 	{

@@ -15,7 +15,7 @@ func NewEnforcer(db *gorm.DB) (*casbin.Enforcer, error) {
 	}
 
 	// 加载模型配置文件
-	enforcer, err := casbin.NewEnforcer("configs/rbac_model.conf", adapter)
+	enforcer, err := casbin.NewEnforcer("../../configs/rbac_model", adapter)
 	if err != nil {
 		return nil, err
 	}

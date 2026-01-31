@@ -35,7 +35,7 @@ func (h *UserHandler) Create(c *gin.Context) {
 func (h *UserHandler) GetByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, _ := strconv.ParseInt(idStr, 10, 64)
-	var req = &pb.SingleIDRequest{Id: id}
+	var req = &pb.SingleIDRequest{Id: uint64(id)}
 	u, err := h.svc.GetByID(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})

@@ -16,6 +16,7 @@ import (
 // NewHTTPServer new an HTTP server.
 func NewHTTPServer(cfg *conf.Bootstrap,
 	userHandler *httpServerHandler.UserHandler,
+	productHandler *httpServerHandler.ProductHandler,
 	enforcer *casbin.Enforcer,
 	greeter *service.GreeterService, logger log.Logger) *khttp.Server {
 
@@ -28,7 +29,10 @@ func NewHTTPServer(cfg *conf.Bootstrap,
 
 	// 注册Router
 	userRouter := router.NewUserRouter(enforcer, userHandler)
-	userRouter.RegisterUserRoutes(private, public)
+	userRouter.InitUserRoutes(private, public)
+
+	productRouter := router.NewProductRouter(enforcer, productHandler)
+	productRouter.InitProductRouter(private, public)
 
 	var opts []khttp.ServerOption
 	if cfg.Server.Http.Network != "" {

@@ -79,4 +79,8 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
+# gen server
+server:
+	~/go/bin/kratos proto server api/product/v1/product.proto -t internal/service
+
 .DEFAULT_GOAL := help

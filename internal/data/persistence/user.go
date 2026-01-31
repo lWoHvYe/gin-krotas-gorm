@@ -1,4 +1,4 @@
-// internal/infrastructure/persistence/user_repo.go
+// internal/infrastructure/persistence/user.go
 package persistence
 
 import (
