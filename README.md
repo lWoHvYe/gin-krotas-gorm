@@ -82,6 +82,9 @@ docker run --rm -p 8000:8000 -p 9000:9000 -v </path/to/your/configs>:/data/conf 
 │   │   ├── README.md
 │   │   ├── biz.go
 │   │   └── greeter.go
+|   |   |__ model // 基于表或结构体生成的domain
+|   |   |__ query // 基于表或结构体生成的query (gorm) 用于db操作
+|   |-- bootstrap wire DI注入层
 │   ├── conf  // 内部使用的config的结构定义，使用proto格式生成
 │   │   ├── conf.pb.go
 │   │   └── conf.proto
@@ -89,10 +92,15 @@ docker run --rm -p 8000:8000 -p 9000:9000 -v </path/to/your/configs>:/data/conf 
 │   │   ├── README.md
 │   │   ├── data.go
 │   │   └── greeter.go
+|   |   |__ persistence repo层
+|   |-- pkg 一些工具类
 │   ├── server(transport)  // http和grpc实例的创建和配置
 │   │   ├── grpc.go
 │   │   ├── http.go
 │   │   └── server.go
+|   |   |__ http http相关
+|   |       |__ handler
+|   |       |__ router
 │   └── service(application)  // 实现了 api 定义的服务层，类似 DDD 的 application 层，处理 DTO 到 biz 领域实体的转换(DTO -> DO)，同时协同各类 biz 交互，但是不应处理复杂逻辑
 │       ├── README.md
 │       ├── greeter.go
