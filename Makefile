@@ -81,6 +81,6 @@ help:
 
 # gen server
 server:
-	~/go/bin/kratos proto server api/product/v1/product.proto -t internal/service
+	~/go/bin/kratos proto server api/order/v1/order.proto -t internal/service
 
 .DEFAULT_GOAL := help
