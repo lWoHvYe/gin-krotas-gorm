@@ -11,8 +11,10 @@ func main() {
 	db, _ := gorm.Open(mysql.Open("root:root@tcp(10.211.55.29:3306)/unicorn?parseTime=True&loc=Local"))
 
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "internal/biz/order",
-		Mode:    gen.WithDefaultQuery | gen.WithQueryInterface,
+		OutPath:           "internal/biz/order",
+		Mode:              gen.WithDefaultQuery | gen.WithQueryInterface,
+		FieldWithTypeTag:  true,
+		FieldWithIndexTag: true,
 	})
 
 	g.UseDB(db)
