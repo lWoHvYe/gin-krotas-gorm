@@ -1,26 +1,14 @@
 package data
 
 import (
+	"helloworld-go/internal/biz"
 	"helloworld-go/internal/data/persistence"
 
-	"helloworld-go/internal/conf"
-
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 )
 
 // ProviderSet is data providers.
-var RepoSet = wire.NewSet(NewData, NewGreeterRepo, persistence.NewUserRepo, NewEnforcer, persistence.NewProductRepo)
-
-// Data .
-type Data struct {
-	// TODO wrapped database client
-}
-
-// NewData .
-func NewData(c *conf.Bootstrap, logger log.Logger) (*Data, func(), error) {
-	cleanup := func() {
-		log.NewHelper(logger).Info("closing the data resources")
-	}
-	return &Data{}, cleanup, nil
-}
+var RepoSet = wire.NewSet(persistence.NewData, NewGreeterRepo, persistence.NewUserRepo, NewEnforcer,
+	persistence.NewProductRepo,
+	persistence.NewOrderRepo,
+	wire.Bind(new(biz.Transaction), new(*persistence.Data)))

@@ -16,7 +16,7 @@ func NewProductRouter(e *casbin.Enforcer, productHandler *handler.ProductHandler
 	return &ProductRouter{enforcer: e, productHandler: productHandler}
 }
 
-func (r *ProductRouter) InitProductRouter(private *gin.RouterGroup, public *gin.RouterGroup) {
+func (r *ProductRouter) RegisterProductRouter(private *gin.RouterGroup, public *gin.RouterGroup) {
 	productGroup := public.Group("product")
 	{
 		// 商品详情

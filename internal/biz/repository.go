@@ -166,18 +166,18 @@ func (r *RepositoryImpl[T]) Exists(ctx context.Context, condition string, args .
 	return count > 0, err
 }
 
-// Transaction 执行事务
-func Transaction(db *gorm.DB, fn func(tx *gorm.DB) error) error {
-	return db.Transaction(fn)
-}
-
-// TransactionWithResult 执行事务并返回结果
-func TransactionWithResult[T any](db *gorm.DB, fn func(tx *gorm.DB) (T, error)) (T, error) {
-	var result T
-	err := db.Transaction(func(tx *gorm.DB) error {
-		var err error
-		result, err = fn(tx)
-		return err
-	})
-	return result, err
-}
+//// Transaction 执行事务
+//func Transaction(db *gorm.DB, fn func(tx *gorm.DB) error) error {
+//	return db.Transaction(fn)
+//}
+//
+//// TransactionWithResult 执行事务并返回结果
+//func TransactionWithResult[T any](db *gorm.DB, fn func(tx *gorm.DB) (T, error)) (T, error) {
+//	var result T
+//	err := db.Transaction(func(tx *gorm.DB) error {
+//		var err error
+//		result, err = fn(tx)
+//		return err
+//	})
+//	return result, err
+//}

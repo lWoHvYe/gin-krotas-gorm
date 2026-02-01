@@ -3,23 +3,23 @@ package persistence
 import (
 	"context"
 	"helloworld-go/internal/biz/model"
-	"helloworld-go/internal/biz/product"
+	"helloworld-go/internal/biz/query"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
 )
 
 type ProductRepo struct {
-	db  *gorm.DB
-	log *log.Helper
+	data *Data
+	log  *log.Helper
 }
 
-func NewProductRepo(db *gorm.DB, logger log.Logger) *ProductRepo {
-	return &ProductRepo{db: db, log: log.NewHelper(logger)}
+func NewProductRepo(data *Data, logger log.Logger) *ProductRepo {
+	return &ProductRepo{data: data, log: log.NewHelper(logger)}
 }
 
 func (p *ProductRepo) GetProductWithSkus(ctx context.Context, productId int64) (*model.ProductSpu, error) {
-	q := product.Use(p.db)
+	q := p.data.Q(ctx)
 	return q.ProductSpu.
 		WithContext(ctx).
 		Preload(q.ProductSpu.Skus). // 单纯一对多，用Preload
@@ -28,7 +28,7 @@ func (p *ProductRepo) GetProductWithSkus(ctx context.Context, productId int64) (
 }
 
 func (p *ProductRepo) GetProductByPage(ctx context.Context, Page int, PageSize int) ([]*model.ProductSpu, int64, error) {
-	q := product.Use(p.db)
+	q := p.data.Q(ctx)
 	offset := (Page - 1) * PageSize
 	return q.ProductSpu.
 		WithContext(ctx).
@@ -38,17 +38,17 @@ func (p *ProductRepo) GetProductByPage(ctx context.Context, Page int, PageSize i
 }
 
 func (p *ProductRepo) GetProductHasStock(ctx context.Context, productId int64) (*model.ProductSpu, error) {
-	q := product.Use(p.db)
+	q := p.data.Q(ctx)
 	return q.ProductSpu.
 		WithContext(ctx).
-		Preload(q.ProductSpu.Skus.Where(product.ProductSku.Stock.Gt(0))).
+		Preload(q.ProductSpu.Skus.Where(query.ProductSku.Stock.Gt(0))).
 		Where(q.ProductSpu.ID.Eq(productId)).
 		First()
 }
 
-func (p *ProductRepo) GetBestProduct(ctx context.Context) ([]product.SpuWithMinPrice, error) {
-	q := product.Use(p.db)
-	var res []product.SpuWithMinPrice
+func (p *ProductRepo) GetBestProduct(ctx context.Context) ([]query.SpuWithMinPrice, error) {
+	q := p.data.Q(ctx)
+	var res []query.SpuWithMinPrice
 	err := q.ProductSpu.WithContext(ctx).
 		Select(
 			q.ProductSpu.ID,
@@ -64,11 +64,20 @@ func (p *ProductRepo) GetBestProduct(ctx context.Context) ([]product.SpuWithMinP
 
 // 不含sku
 func (p *ProductRepo) GetSpu(ctx context.Context, id int64) (*model.ProductSpu, error) {
-	q := product.Use(p.db)
+	q := p.data.Q(ctx)
 	return q.ProductSpu.WithContext(ctx).Where(q.ProductSpu.ID.Eq(id)).First()
 }
 
 func (p *ProductRepo) ListSkusBySpu(ctx context.Context, spuId int64) ([]*model.ProductSku, error) {
-	q := product.Use(p.db)
+	q := p.data.Q(ctx)
 	return q.ProductSku.WithContext(ctx).Where(q.ProductSku.SpuID.Eq(spuId)).Find()
+}
+
+func (p *ProductRepo) ReduceStock(ctx context.Context, skuId int64, num int32) error {
+	q := p.data.Q(ctx)
+	// 2. 操作商品表 (扣库存)
+	_, err := q.ProductSku.WithContext(ctx).
+		Where(q.ProductSku.ID.Eq(skuId)).
+		Update(q.ProductSku.Stock, gorm.Expr("stock - ?", num))
+	return err
 }

@@ -2,6 +2,7 @@ package server
 
 import (
 	HelloWorldV1 "helloworld-go/api/helloworld/v1"
+	orderAPIV1 "helloworld-go/api/order/v1"
 	productV1 "helloworld-go/api/product/v1"
 	UserAPIV1 "helloworld-go/api/user/v1"
 	"helloworld-go/internal/conf"
@@ -17,6 +18,7 @@ func NewGRPCServer(cfg *conf.Bootstrap,
 	greeter *service.GreeterService,
 	user *service.UserService,
 	product *service.ProductService,
+	order *service.OrderService,
 	logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
@@ -36,5 +38,6 @@ func NewGRPCServer(cfg *conf.Bootstrap,
 	HelloWorldV1.RegisterGreeterServer(srv, greeter)
 	UserAPIV1.RegisterUserServer(srv, user)
 	productV1.RegisterProductServer(srv, product)
+	orderAPIV1.RegisterOrderServer(srv, order)
 	return srv
 }

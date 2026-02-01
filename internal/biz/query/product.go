@@ -1,4 +1,4 @@
-package product
+package query
 
 type SpuWithMinPrice struct {
 	ID       uint
