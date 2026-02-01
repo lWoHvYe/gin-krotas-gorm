@@ -3,6 +3,7 @@ package middleware
 import (
 	"helloworld-go/internal/pkg/utils"
 	"net/http"
+	"strconv"
 
 	"github.com/casbin/casbin/v3"
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ func CasbinMiddleware(e *casbin.Enforcer) gin.HandlerFunc {
 		// 1. 获取当前用户标识（假设你之前在 JWT 中间件里设置了 "userID"）
 		val, _ := c.Get("claims")
 		claims := val.(*utils.CustomClaims)
-		sub := claims.AuthorityId // 或者使用用户唯一 ID
+		sub := "u:" + strconv.FormatUint(claims.UID, 10) // 或者使用用户唯一 ID
 
 		// 2. 获取请求的资源 (对象) 和 操作 (动作)
 		obj := c.Request.URL.Path
