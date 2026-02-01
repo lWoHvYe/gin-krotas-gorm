@@ -25,7 +25,7 @@ func NewOrderService(or *persistence.OrderRepo, pr *persistence.ProductRepo, tx 
 
 func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) (*pb.CreateOrderReply, error) {
 	// 1. 获取当前用户 (从 JWT 中间件存入的 Context 获取)
-	userId := ctx.Value("userID").(int64)
+	userId := ctx.Value("userID").(uint64)
 
 	var orderSn string
 	var totalPayAmount float64
@@ -46,12 +46,13 @@ func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) 
 		// C. 构建订单实体
 		orderEntity := &model.Order{
 			OrderSn:         orderSn,
-			UserID:          userId,
+			UserID:          int64(userId),
 			TotalAmount:     319.0,
 			PayAmount:       99.0, // 示例数值
 			ReceiverName:    "张三",
 			ReceiverAddress: strconv.Itoa(int(req.AddressId)),
 			Remark:          req.Remark,
+			PayTime:         time.Now(),
 		}
 
 		orderItems := make([]*model.OrderItem, 0)

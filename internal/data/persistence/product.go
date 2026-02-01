@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"errors"
 	"helloworld-go/internal/biz/model"
 	"helloworld-go/internal/biz/query"
 
@@ -76,8 +77,11 @@ func (p *ProductRepo) ListSkusBySpu(ctx context.Context, spuId int64) ([]*model.
 func (p *ProductRepo) ReduceStock(ctx context.Context, skuId int64, num int32) error {
 	q := p.data.Q(ctx)
 	// 2. 操作商品表 (扣库存)
-	_, err := q.ProductSku.WithContext(ctx).
-		Where(q.ProductSku.ID.Eq(skuId)).
+	info, err := q.ProductSku.WithContext(ctx).
+		Where(q.ProductSku.ID.Eq(skuId), q.ProductSku.Stock.Gte(int64(num))).
 		Update(q.ProductSku.Stock, gorm.Expr("stock - ?", num))
+	if info.RowsAffected == 0 {
+		return errors.New("库存不足")
+	}
 	return err
 }
