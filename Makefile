@@ -83,4 +83,8 @@ help:
 server:
 	~/go/bin/kratos proto server api/order/v1/order.proto -t internal/service
 
+# gen code from db
+gen_code:
+	go run cmd/gorm_gen.go
+
 .DEFAULT_GOAL := help

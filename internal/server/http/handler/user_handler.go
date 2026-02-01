@@ -60,7 +60,17 @@ func (h *UserHandler) UpdateRoleById(c *gin.Context) {
 
 func (h *UserHandler) Login(c *gin.Context) {
 	j := utils.NewJWT()
-	claims := &utils.CustomClaims{BaseClaims: utils.BaseClaims{UID: 1, Username: "admin", NickName: "power", AuthorityId: 1}}
+	var req pb.LoginRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	u, err := h.svc.Login(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	claims := &utils.CustomClaims{BaseClaims: utils.BaseClaims{UID: u.Id, Username: u.Name, NickName: "power", AuthorityId: u.RoleId}}
 	token, err := j.CreateToken(*claims)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})

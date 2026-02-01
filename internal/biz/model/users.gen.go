@@ -8,9 +8,11 @@ const TableNameUser = "users"
 
 // User mapped from table <users>
 type User struct {
-	ID       int32  `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	Name     string `gorm:"column:name" json:"name"`
-	RoleName string `gorm:"column:role_name" json:"role_name"`
+	ID        int32      `gorm:"column:id;type:int;primaryKey;autoIncrement:true" json:"id"`
+	Name      string     `gorm:"column:name;type:varchar(64);index:name,priority:1" json:"name"`
+	Desc      string     `gorm:"column:desc;type:varchar(255)" json:"desc"`
+	Phone     string     `gorm:"column:phone;type:varchar(32)" json:"phone"`
+	UserRoles []UserRole `json:"user_roles"`
 }
 
 // TableName User's table name

@@ -16,10 +16,10 @@ type CustomClaims struct {
 
 type BaseClaims struct {
 	UUID        string
-	UID         uint
+	UID         uint64
 	Username    string
 	NickName    string
-	AuthorityId uint
+	AuthorityId []uint64
 }
 
 type JWT struct {
@@ -35,7 +35,7 @@ var (
 
 func NewJWT() *JWT {
 	return &JWT{
-		[]byte("你的加密密钥"), // 建议从 Kratos Config 中读取
+		[]byte("lWoHvYe"), // 建议从 Kratos Config 中读取
 	}
 }
 

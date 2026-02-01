@@ -7,7 +7,6 @@ package user
 import (
 	"context"
 	"database/sql"
-	"helloworld-go/internal/biz/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -17,6 +16,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"helloworld-go/internal/biz/model"
 )
 
 func newUser(db *gorm.DB, opts ...gen.DOOption) user {
@@ -29,7 +30,13 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 	_user.ALL = field.NewAsterisk(tableName)
 	_user.ID = field.NewInt32(tableName, "id")
 	_user.Name = field.NewString(tableName, "name")
-	_user.RoleName = field.NewString(tableName, "role_name")
+	_user.Desc = field.NewString(tableName, "desc")
+	_user.Phone = field.NewString(tableName, "phone")
+	_user.UserRoles = userHasManyUserRoles{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("UserRoles", "model.UserRole"),
+	}
 
 	_user.fillFieldMap()
 
@@ -39,10 +46,12 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 type user struct {
 	userDo userDo
 
-	ALL      field.Asterisk
-	ID       field.Int32
-	Name     field.String
-	RoleName field.String
+	ALL       field.Asterisk
+	ID        field.Int32
+	Name      field.String
+	Desc      field.String
+	Phone     field.String
+	UserRoles userHasManyUserRoles
 
 	fieldMap map[string]field.Expr
 }
@@ -61,7 +70,8 @@ func (u *user) updateTableName(table string) *user {
 	u.ALL = field.NewAsterisk(table)
 	u.ID = field.NewInt32(table, "id")
 	u.Name = field.NewString(table, "name")
-	u.RoleName = field.NewString(table, "role_name")
+	u.Desc = field.NewString(table, "desc")
+	u.Phone = field.NewString(table, "phone")
 
 	u.fillFieldMap()
 
@@ -86,20 +96,106 @@ func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (u *user) fillFieldMap() {
-	u.fieldMap = make(map[string]field.Expr, 3)
+	u.fieldMap = make(map[string]field.Expr, 5)
 	u.fieldMap["id"] = u.ID
 	u.fieldMap["name"] = u.Name
-	u.fieldMap["role_name"] = u.RoleName
+	u.fieldMap["desc"] = u.Desc
+	u.fieldMap["phone"] = u.Phone
+
 }
 
 func (u user) clone(db *gorm.DB) user {
 	u.userDo.ReplaceConnPool(db.Statement.ConnPool)
+	u.UserRoles.db = db.Session(&gorm.Session{Initialized: true})
+	u.UserRoles.db.Statement.ConnPool = db.Statement.ConnPool
 	return u
 }
 
 func (u user) replaceDB(db *gorm.DB) user {
 	u.userDo.ReplaceDB(db)
+	u.UserRoles.db = db.Session(&gorm.Session{})
 	return u
+}
+
+type userHasManyUserRoles struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a userHasManyUserRoles) Where(conds ...field.Expr) *userHasManyUserRoles {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a userHasManyUserRoles) WithContext(ctx context.Context) *userHasManyUserRoles {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a userHasManyUserRoles) Session(session *gorm.Session) *userHasManyUserRoles {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a userHasManyUserRoles) Model(m *model.User) *userHasManyUserRolesTx {
+	return &userHasManyUserRolesTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a userHasManyUserRoles) Unscoped() *userHasManyUserRoles {
+	a.db = a.db.Unscoped()
+	return &a
+}
+
+type userHasManyUserRolesTx struct{ tx *gorm.Association }
+
+func (a userHasManyUserRolesTx) Find() (result []*model.UserRole, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a userHasManyUserRolesTx) Append(values ...*model.UserRole) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a userHasManyUserRolesTx) Replace(values ...*model.UserRole) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a userHasManyUserRolesTx) Delete(values ...*model.UserRole) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a userHasManyUserRolesTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a userHasManyUserRolesTx) Count() int64 {
+	return a.tx.Count()
+}
+
+func (a userHasManyUserRolesTx) Unscoped() *userHasManyUserRolesTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type userDo struct{ gen.DO }

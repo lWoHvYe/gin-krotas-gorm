@@ -43,6 +43,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/user.v1.UserReply'
+    /v1/users/login:
+        post:
+            tags:
+                - User
+            operationId: User_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.UserReply'
     /v1/users/{id}:
         get:
             tags:
@@ -93,6 +111,13 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
+        user.v1.LoginRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                password:
+                    type: string
         user.v1.RegisterRequest:
             type: object
             properties:
@@ -108,8 +133,10 @@ components:
             properties:
                 id:
                     type: string
-                roleName:
-                    type: string
+                roleId:
+                    type: array
+                    items:
+                        type: string
         user.v1.UserReply:
             type: object
             properties:
@@ -117,8 +144,10 @@ components:
                     type: string
                 name:
                     type: string
-                roleName:
-                    type: string
+                roleId:
+                    type: array
+                    items:
+                        type: string
 tags:
     - name: Greeter
       description: The greeting service definition.

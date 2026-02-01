@@ -24,13 +24,28 @@ func (r *UserRepo) Create(ctx context.Context, u *model.User) error {
 
 func (r *UserRepo) FindByID(ctx context.Context, id int32) (*model.User, error) {
 	q := biz.Use(r.db)
-	return q.User.WithContext(ctx).Where(q.User.ID.Eq(id)).First()
+	return q.User.
+		WithContext(ctx).
+		Preload(q.User.UserRoles.Where(q.UserRole.Status.Eq("1"))).
+		Preload(q.UserRole.Role).
+		Where(q.User.ID.Eq(id)).
+		First()
 }
 
-func (r *UserRepo) UpdateRoleByID(ctx context.Context, u *model.User) error {
+func (r *UserRepo) UpdateRoleByID(ctx context.Context, userId int32, roleIds []uint64) error {
 	q := biz.Use(r.db)
-	_, err := q.User.WithContext(ctx).Where(q.User.ID.Eq(u.ID)).Update(q.User.RoleName, u.RoleName)
-	return err
+	// 开启事务
+	return q.Transaction(func(tx *biz.Query) error {
+		// 在 tx 上做所有 DB 操作
+		if _, err := tx.UserRole.WithContext(ctx).Where(tx.UserRole.UserID.Eq(userId)).Delete(); err != nil {
+			return err
+		}
+		userRoles := make([]*model.UserRole, len(roleIds))
+		for _, roleId := range roleIds {
+			userRoles = append(userRoles, &model.UserRole{UserID: userId, RoleID: int32(roleId), Status: "1"})
+		}
+		return tx.UserRole.WithContext(ctx).Create(userRoles...)
+	})
 }
 
 func (r *UserRepo) UpdateByID(ctx context.Context, u *model.User) error {
@@ -41,6 +56,23 @@ func (r *UserRepo) UpdateByID(ctx context.Context, u *model.User) error {
 
 func (r *UserRepo) Delete(ctx context.Context, id int32) error {
 	q := biz.Use(r.db)
-	_, err := q.User.WithContext(ctx).Where(q.User.ID.Eq(id)).Delete()
-	return err
+	return q.Transaction(func(tx *biz.Query) error {
+		if _, err := tx.User.WithContext(ctx).Where(tx.User.ID.Eq(id)).Delete(); err != nil {
+			return err
+		}
+		if _, err := tx.UserRole.WithContext(ctx).Where(tx.UserRole.UserID.Eq(id)).Delete(); err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
+func (r *UserRepo) FindByName(ctx context.Context, name string) (*model.User, error) {
+	q := biz.Use(r.db)
+	return q.User.
+		WithContext(ctx).
+		Preload(q.User.UserRoles.Where(q.UserRole.Status.Eq("1"))).
+		Preload(q.UserRole.Role).
+		Where(q.User.Name.Eq(name)).
+		First()
 }

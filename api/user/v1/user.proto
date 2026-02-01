@@ -3,7 +3,9 @@ syntax = "proto3";
 
 package user.v1;
 
+import "validate/validate.proto";
 import "google/api/annotations.proto";
+
 
 option go_package = "helloworld-go/api/user/v1;v1";
 option java_multiple_files = true;
@@ -30,6 +32,17 @@ service User {
       body: "*"
     };
   }
+  rpc Login (LoginRequest) returns (UserReply) {
+    option (google.api.http) = {
+      post: "/v1/users/login"
+      body: "*"
+    };
+  }
+}
+
+message LoginRequest {
+  string name = 1;
+  string password = 2;
 }
 
 message RegisterRequest {
@@ -42,7 +55,7 @@ message SingleIDRequest {
 
 message UpdateRoleRequest {
   uint64 id = 1;
-  string role_name = 2;
+  repeated uint64 role_id = 2 [(validate.rules).repeated.min_items = 1];
 }
 
 message SimpleResponse {
@@ -52,5 +65,5 @@ message SimpleResponse {
 message UserReply {
   uint64 id = 1;
   string name = 2;
-  string role_name = 3;
+  repeated uint64 role_id = 3;
 }

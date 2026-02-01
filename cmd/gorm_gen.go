@@ -11,7 +11,7 @@ func main() {
 	db, _ := gorm.Open(mysql.Open("root:root@tcp(10.211.55.29:3306)/unicorn?parseTime=True&loc=Local"))
 
 	g := gen.NewGenerator(gen.Config{
-		OutPath:           "internal/biz/query",
+		OutPath:           "internal/biz/user",
 		Mode:              gen.WithDefaultQuery | gen.WithQueryInterface,
 		FieldWithTypeTag:  true,
 		FieldWithIndexTag: true,
@@ -19,7 +19,26 @@ func main() {
 
 	g.UseDB(db)
 
-	sku := g.GenerateModel("product_skus")
+	user := g.GenerateModel("users")
+	role := g.GenerateModel("roles")
+	userRole := g.GenerateModel("user_roles")
+
+	user = g.GenerateModel("users",
+		gen.FieldRelate(field.HasMany, "UserRoles", userRole, nil),
+	)
+
+	role = g.GenerateModel("roles",
+		gen.FieldRelate(field.HasMany, "UserRoles", userRole, nil),
+	)
+
+	userRole = g.GenerateModel("user_roles",
+		gen.FieldRelate(field.BelongsTo, "User", user, nil),
+		gen.FieldRelate(field.BelongsTo, "Role", role, nil),
+	)
+
+	g.ApplyBasic(user, role, userRole)
+
+	/*sku := g.GenerateModel("product_skus")
 
 	product_tags := make(field.GormTag)
 	product_tags.Append("foreignKey", "SpuId")
@@ -48,7 +67,7 @@ func main() {
 		),
 	)
 
-	g.ApplyBasic(spu, sku, order, order_item)
+	g.ApplyBasic(spu, sku, order, order_item)*/
 
 	g.Execute()
 }
