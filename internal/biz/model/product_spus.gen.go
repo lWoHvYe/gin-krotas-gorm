@@ -18,13 +18,14 @@ type ProductSpu struct {
 	CreatedAt   time.Time      `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt   time.Time      `gorm:"column:updated_at" json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
-	Name        string         `gorm:"column:name;not null;comment:商品名称" json:"name"`        // 商品名称
-	Description string         `gorm:"column:description;comment:商品详情介绍" json:"description"` // 商品详情介绍
-	CategoryID  int64          `gorm:"column:category_id;comment:分类ID" json:"category_id"`   // 分类ID
-	BrandID     int64          `gorm:"column:brand_id;comment:品牌ID" json:"brand_id"`         // 品牌ID
-	MainImage   string         `gorm:"column:main_image;comment:主图URL" json:"main_image"`    // 主图URL
-	IsOnSale    bool           `gorm:"column:is_on_sale;comment:是否上架" json:"is_on_sale"`     // 是否上架
-	Skus        []ProductSku   `json:"skus"`
+	Name        string         `gorm:"column:name;size:255;not null;comment:商品名称"`
+	Description string         `gorm:"column:description;type:text;comment:商品详情介绍"`
+	CategoryID  uint           `gorm:"column:category_id;index;comment:分类ID"`
+	BrandID     uint           `gorm:"column:brand_id;index;comment:品牌ID"`
+	MainImage   string         `gorm:"column:main_image;size:512;comment:主图URL"`
+	IsOnSale    bool           `gorm:"column:is_on_sale;default:false;comment:是否上架"`
+	// 一对多关系：一个 SPU 对应多个 SKU
+	Skus []ProductSku `gorm:"foreignKey:SpuId" json:"skus"`
 }
 
 // TableName ProductSpu's table name

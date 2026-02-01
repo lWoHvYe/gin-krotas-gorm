@@ -2,8 +2,9 @@
 package db
 
 import (
-	"helloworld-go/internal/biz/product"
+	"helloworld-go/internal/biz/model"
 	"helloworld-go/internal/conf"
+	domain "helloworld-go/internal/domain/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -15,6 +16,6 @@ func NewDB(cfg *conf.Bootstrap) (*gorm.DB, error) {
 		panic(err)
 	}
 	// 自动迁移（根据定义同步db表结构，没有表会自动创建）
-	db.AutoMigrate(&product.ProductSpu{}, &product.ProductSku{})
+	db.AutoMigrate(&model.ProductSpu{}, &model.ProductSku{}, &domain.Order{}, &domain.OrderItem{})
 	return db, err
 }

@@ -19,11 +19,14 @@ func main() {
 
 	sku := g.GenerateModel("product_skus")
 
+	tags := make(field.GormTag)
+	tags.Append("foreignKey", "SpuId")
+
 	spu := g.GenerateModel("product_spus",
 		gen.FieldRelate(
 			field.HasMany,
 			"Skus",
-			sku, nil,
+			sku, &field.RelateConfig{GORMTag: tags},
 		),
 	)
 

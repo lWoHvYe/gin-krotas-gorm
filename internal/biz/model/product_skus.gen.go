@@ -18,11 +18,11 @@ type ProductSku struct {
 	CreatedAt time.Time      `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
-	SpuID     int64          `gorm:"column:spu_id;comment:所属SPU_ID" json:"spu_id"`         // 所属SPU_ID
-	SkuCode   string         `gorm:"column:sku_code;comment:SKU唯一编码" json:"sku_code"`      // SKU唯一编码
-	AttrValue string         `gorm:"column:attr_value;comment:属性组合JSON" json:"attr_value"` // 属性组合JSON
-	Price     float64        `gorm:"column:price;comment:售价" json:"price"`                 // 售价
-	Stock     int64          `gorm:"column:stock;comment:库存数量" json:"stock"`               // 库存数量
+	SpuID     uint           `gorm:"column:spu_id;index;comment:所属SPU_ID" json:"spu_id"`
+	SkuCode   string         `gorm:"column:sku_code;size:64;uniqueIndex;comment:SKU唯一编码" json:"sku_code"`
+	AttrValue string         `gorm:"column:attr_value;type:json;comment:属性组合JSON" json:"attr_value"` // GORM 支持 JSON 类型
+	Price     float64        `gorm:"column:price;type:decimal(10,2);comment:售价" json:"price"`
+	Stock     int            `gorm:"column:stock;default:0;comment:库存数量" json:"stock"`
 }
 
 // TableName ProductSku's table name
