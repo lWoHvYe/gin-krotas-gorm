@@ -27,7 +27,7 @@ func (r *UserRepo) FindByID(ctx context.Context, id int32) (*model.User, error) 
 	return q.User.
 		WithContext(ctx).
 		Preload(q.User.UserRoles.Where(q.UserRole.Status.Eq("1"))).
-		Preload(q.UserRole.Role).
+		Preload(q.User.UserRoles.Role).
 		Where(q.User.ID.Eq(id)).
 		First()
 }
@@ -69,10 +69,11 @@ func (r *UserRepo) Delete(ctx context.Context, id int32) error {
 
 func (r *UserRepo) FindByName(ctx context.Context, name string) (*model.User, error) {
 	q := biz.Use(r.db)
+	u := q.User
+	ur := q.UserRole
 	return q.User.
 		WithContext(ctx).
-		Preload(q.User.UserRoles.Where(q.UserRole.Status.Eq("1"))).
-		Preload(q.UserRole.Role).
+		Preload(u.UserRoles.On(ur.Status.Eq("1")), u.UserRoles.Role).
 		Where(q.User.Name.Eq(name)).
 		First()
 }

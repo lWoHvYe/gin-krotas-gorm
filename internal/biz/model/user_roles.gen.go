@@ -12,8 +12,8 @@ type UserRole struct {
 	UserID int32  `gorm:"column:user_id;type:int;index:fk_users_user_roles,priority:1" json:"user_id"`
 	RoleID int32  `gorm:"column:role_id;type:int;index:fk_user_roles_role,priority:1" json:"role_id"`
 	Status string `gorm:"column:status;type:varchar(8)" json:"status"`
-	User   User   `json:"user"`
-	Role   Role   `json:"role"`
+	User   User   `gorm:"foreignKey:UserID" json:"user"`
+	Role   Role   `gorm:"foreignKey:RoleID" json:"role"`
 }
 
 // TableName UserRole's table name

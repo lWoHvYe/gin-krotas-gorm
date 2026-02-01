@@ -36,6 +36,16 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 		db: db.Session(&gorm.Session{}),
 
 		RelationField: field.NewRelation("UserRoles", "model.UserRole"),
+		User: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("UserRoles.User", "model.User"),
+		},
+		Role: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("UserRoles.Role", "model.Role"),
+		},
 	}
 
 	_user.fillFieldMap()
@@ -121,6 +131,13 @@ type userHasManyUserRoles struct {
 	db *gorm.DB
 
 	field.RelationField
+
+	User struct {
+		field.RelationField
+	}
+	Role struct {
+		field.RelationField
+	}
 }
 
 func (a userHasManyUserRoles) Where(conds ...field.Expr) *userHasManyUserRoles {

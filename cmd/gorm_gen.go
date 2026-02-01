@@ -19,24 +19,31 @@ func main() {
 
 	g.UseDB(db)
 
-	user := g.GenerateModel("users")
-	role := g.GenerateModel("roles")
-	userRole := g.GenerateModel("user_roles")
+	// 1. 定义基本模型（不要在这里加关系，防止循环引用导致空指针）
+	u := g.GenerateModel("users")
+	r := g.GenerateModel("roles")
+	ur := g.GenerateModel("user_roles")
 
-	user = g.GenerateModel("users",
-		gen.FieldRelate(field.HasMany, "UserRoles", userRole, nil),
+	f_userId_tags := make(field.GormTag)
+	f_userId_tags.Append("foreignKey", "UserID")
+	f_roleId_tags := make(field.GormTag)
+	f_roleId_tags.Append("foreignKey", "RoleID")
+	// 2. 重新定义带关系的 UserRole (它需要引用 User 和 Role)
+	ur = g.GenerateModel("user_roles",
+		gen.FieldRelate(field.BelongsTo, "User", u, &field.RelateConfig{GORMTag: f_userId_tags}),
+		gen.FieldRelate(field.BelongsTo, "Role", r, &field.RelateConfig{GORMTag: f_roleId_tags}),
 	)
 
-	role = g.GenerateModel("roles",
-		gen.FieldRelate(field.HasMany, "UserRoles", userRole, nil),
+	// 3. 重新定义带关系的 User 和 Role (它们需要引用已经带了关系的 UserRole)
+	u = g.GenerateModel("users",
+		gen.FieldRelate(field.HasMany, "UserRoles", ur, &field.RelateConfig{GORMTag: f_userId_tags}),
+	)
+	r = g.GenerateModel("roles",
+		gen.FieldRelate(field.HasMany, "UserRoles", ur, &field.RelateConfig{GORMTag: f_roleId_tags}),
 	)
 
-	userRole = g.GenerateModel("user_roles",
-		gen.FieldRelate(field.BelongsTo, "User", user, nil),
-		gen.FieldRelate(field.BelongsTo, "Role", role, nil),
-	)
-
-	g.ApplyBasic(user, role, userRole)
+	// 4. 最后统一应用
+	g.ApplyBasic(u, r, ur)
 
 	/*sku := g.GenerateModel("product_skus")
 

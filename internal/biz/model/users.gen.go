@@ -12,7 +12,7 @@ type User struct {
 	Name      string     `gorm:"column:name;type:varchar(64);index:name,priority:1" json:"name"`
 	Desc      string     `gorm:"column:desc;type:varchar(255)" json:"desc"`
 	Phone     string     `gorm:"column:phone;type:varchar(32)" json:"phone"`
-	UserRoles []UserRole `json:"user_roles"`
+	UserRoles []UserRole `gorm:"foreignKey:UserID" json:"user_roles"`
 }
 
 // TableName User's table name

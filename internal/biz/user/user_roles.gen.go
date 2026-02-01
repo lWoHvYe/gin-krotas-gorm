@@ -36,22 +36,12 @@ func newUserRole(db *gorm.DB, opts ...gen.DOOption) userRole {
 		db: db.Session(&gorm.Session{}),
 
 		RelationField: field.NewRelation("User", "model.User"),
-		UserRoles: struct {
-			field.RelationField
-		}{
-			RelationField: field.NewRelation("User.UserRoles", "model.UserRole"),
-		},
 	}
 
 	_userRole.Role = userRoleBelongsToRole{
 		db: db.Session(&gorm.Session{}),
 
 		RelationField: field.NewRelation("Role", "model.Role"),
-		UserRoles: struct {
-			field.RelationField
-		}{
-			RelationField: field.NewRelation("Role.UserRoles", "model.UserRole"),
-		},
 	}
 
 	_userRole.fillFieldMap()
@@ -142,10 +132,6 @@ type userRoleBelongsToUser struct {
 	db *gorm.DB
 
 	field.RelationField
-
-	UserRoles struct {
-		field.RelationField
-	}
 }
 
 func (a userRoleBelongsToUser) Where(conds ...field.Expr) *userRoleBelongsToUser {
@@ -227,10 +213,6 @@ type userRoleBelongsToRole struct {
 	db *gorm.DB
 
 	field.RelationField
-
-	UserRoles struct {
-		field.RelationField
-	}
 }
 
 func (a userRoleBelongsToRole) Where(conds ...field.Expr) *userRoleBelongsToRole {

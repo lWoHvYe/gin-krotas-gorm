@@ -11,7 +11,7 @@ type Role struct {
 	ID        int32      `gorm:"column:id;type:int;primaryKey;autoIncrement:true" json:"id"`
 	Code      string     `gorm:"column:code;type:varchar(32);index:code,priority:1" json:"code"`
 	Name      string     `gorm:"column:name;type:varchar(64)" json:"name"`
-	UserRoles []UserRole `json:"user_roles"`
+	UserRoles []UserRole `gorm:"foreignKey:RoleID" json:"user_roles"`
 }
 
 // TableName Role's table name
