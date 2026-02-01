@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package api.order.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "helloworld-go/api/order/v1;v1";
+
+service Order {
+  // 创建订单 (下单)
+  rpc CreateOrder (CreateOrderReq) returns (CreateOrderReply) {}
+  // 获取订单详情
+  rpc GetOrderDetail (GetOrderDetailReq) returns (GetOrderDetailReply) {}
+}
+
+// 下单请求
+message CreateOrderReq {
+  uint32 address_id = 1 [(validate.rules).uint32.gt = 0]; // 收货地址ID
+  string remark = 2; // 订单备注
+  message CartItem {
+    uint32 sku_id = 1;
+    int32 num = 2;
+  }
+  repeated CartItem items = 3 [(validate.rules).repeated.min_items = 1]; // 下单商品
+}
+
+message CreateOrderReply {
+  string order_sn = 1; // 订单号
+  double total_amount = 2; // 最终支付金额
+}
+
+message GetOrderDetailReq {
+  string order_sn = 1; // 订单号
+}
+
+// 订单详情响应
+message GetOrderDetailReply {
+  string order_sn = 1;
+  uint32 status = 2; // 状态：1待支付 2待发货 3待收货 4已完成 5已取消
+  double total_amount = 3;
+  double pay_amount = 4;
+  double freight_amount = 5; // 运费
+  string receiver_name = 6;
+  string receiver_phone = 7;
+  string receiver_address = 8;
+  repeated OrderItemInfo items = 9;
+  string created_at = 10;
+}
+
+message OrderItemInfo {
+  uint32 sku_id = 1;
+  string sku_name = 2;
+  string sku_pic = 3;
+  double price = 4;
+  int32 num = 5;
+}
