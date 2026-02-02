@@ -10,6 +10,10 @@ option go_package = "helloworld-go/api/product/v1;v1";
 service Product {
   // 获取商品详情（包含 SPU 和 SKU 列表）
   rpc GetProductDetail (GetProductDetailReq) returns (GetProductDetailReply) {}
+
+  rpc ReduceStock (ReduceStockReq) returns (SimpleResponse) {}    // 正向：扣库存
+
+  rpc CompensateStock (ReduceStockReq) returns (SimpleResponse) {} // 补偿：回滚库存
 }
 
 message GetProductDetailReq {
@@ -34,4 +38,15 @@ message GetProductDetailReply {
   uint32 category_id = 5;
   uint32 brand_id = 6;
   repeated SkuInfo skus = 7; // 关联的 SKU 列表
+}
+
+// 库存扣减
+message ReduceStockReq {
+  string OrderSn = 1;
+  int64 SkuId = 2;
+  int32 Num = 3;
+}
+
+message SimpleResponse {
+  string msg = 1;
 }
