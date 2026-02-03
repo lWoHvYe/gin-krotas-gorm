@@ -78,7 +78,7 @@ func main() {
 	//注册全局的resolver,  现在business server可以使用 discovery:///dtmservice 来访问dtm
 	resolver.Register(discovery.NewBuilder(registry, discovery.WithInsecure(true)))
 	// with registrar
-	//kratos.Registrar(registry)
+	kratos.Registrar(registry)
 
 	//var dtmServer = "discovery:///dtmservice"
 

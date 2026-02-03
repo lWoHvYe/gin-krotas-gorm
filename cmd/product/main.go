@@ -3,12 +3,18 @@ package main
 import (
 	"flag"
 	"os"
+	"strings"
 
+	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/go-kratos/kratos/v2/transport/grpc/resolver/discovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
+
+	etcdAPI "go.etcd.io/etcd/client/v3"
+	"google.golang.org/grpc/resolver"
 
 	_ "go.uber.org/automaxprocs"
 )
@@ -55,6 +61,23 @@ func main() {
 		"trace.id", tracing.TraceID(),
 		"span.id", tracing.SpanID(),
 	)
+
+	var etcdServer = "10.211.55.29:2379"
+
+	//采用Kratos的方法创建registry, https://go-kratos.dev/docs/component/registry/
+	client, err := etcdAPI.New(etcdAPI.Config{
+		Endpoints: strings.Split(etcdServer, ","),
+	})
+	if err != nil {
+		panic(err)
+	}
+	registry := etcd.New(client)
+	defer client.Close()
+
+	//注册全局的resolver,  现在business server可以使用 discovery:///dtmservice 来访问dtm
+	resolver.Register(discovery.NewBuilder(registry, discovery.WithInsecure(true)))
+	// with registrar
+	kratos.Registrar(registry)
 
 	app, cleanup, err := wireApp(flagconf, logger)
 	if err != nil {
