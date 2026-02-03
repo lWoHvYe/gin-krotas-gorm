@@ -17,3 +17,7 @@ data:
   dtm:
     address: "discovery:///dtmservice" # DTM Server 的 gRPC 地址
     timeout: 5s
+registry:
+  etcd:
+    endpoints:
+      - 10.211.55.29:2379
