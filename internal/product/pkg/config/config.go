@@ -1,0 +1,55 @@
+package config
+
+import (
+	"helloworld-go/internal/conf"
+	"log"
+	"time"
+
+	clientv3 "go.etcd.io/etcd/client/v3"
+	"google.golang.org/grpc"
+
+	cfg "github.com/go-kratos/kratos/contrib/config/etcd/v2"
+	"github.com/go-kratos/kratos/v2/config"
+)
+
+func NewConfig(flagconf string) (*conf.Bootstrap, error) {
+	// create an etcd client
+	client, err := clientv3.New(clientv3.Config{
+		Endpoints:   []string{"10.211.55.29:2379"},
+		DialTimeout: time.Second,
+		DialOptions: []grpc.DialOption{grpc.WithBlock()},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// configure the source, "path" is required
+	source, err := cfg.New(client, cfg.WithPath(flagconf), cfg.WithPrefix(true))
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	// create a config instance with source
+	c := config.New(config.WithSource(source))
+	defer c.Close()
+
+	// load sources before get
+	if err := c.Load(); err != nil {
+		log.Fatalln(err)
+	}
+
+	// acquire config value
+	var bc conf.Bootstrap
+	if err := c.Scan(&bc); err != nil {
+		return nil, err
+	}
+
+	/*if err := c.Watch("service.name", func(key string, value config.Value) {
+		fmt.Printf("config changed: %s = %v\n", key, value)
+		// Write your callback logic here
+	}); err != nil {
+		log.Error(err)
+	}*/
+
+	return &bc, nil
+}

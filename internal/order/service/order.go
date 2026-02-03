@@ -21,8 +21,8 @@ type OrderService struct {
 	dtmC      *conf.Data_DTM
 }
 
-func NewOrderService(or *persistence.OrderRepo, dtm *conf.Data_DTM) *OrderService {
-	return &OrderService{orderRepo: or, dtmC: dtm}
+func NewOrderService(or *persistence.OrderRepo, c *conf.Bootstrap) *OrderService {
+	return &OrderService{orderRepo: or, dtmC: c.Data.Dtm}
 }
 
 func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) (*pb.CreateOrderReply, error) {

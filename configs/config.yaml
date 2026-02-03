@@ -15,5 +15,5 @@ data:
     write_timeout: 0.2s
   # 新增 DTM 配置
   dtm:
-    address: "10.211.55.29:36790" # DTM Server 的 gRPC 地址
+    address: "discovery:///dtmservice" # DTM Server 的 gRPC 地址
     timeout: 5s
