@@ -34,7 +34,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
+	flag.StringVar(&flagconf, "conf", "/kratos/configs/order", "config path, eg: -conf config.yaml")
 }
 
 // main.go 创建 kratos 应用生命周期管理

@@ -4,11 +4,11 @@ import (
 	pb "helloworld-go/api/product/v1"
 	"helloworld-go/internal/order/biz/model"
 
+	"context"
+
 	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-
-	"context"
 )
 
 type OrderRepo struct {
@@ -18,7 +18,7 @@ type OrderRepo struct {
 
 func NewOrderRepo(data *Data, dis *etcd.Registry, logger log.Logger) *OrderRepo {
 	endpoint := "discovery:///" + pb.Product_ServiceDesc.ServiceName
-	conn, err := grpc.Dial(context.Background(), grpc.WithEndpoint(endpoint), grpc.WithDiscovery(dis))
+	conn, err := grpc.DialInsecure(context.Background(), grpc.WithEndpoint(endpoint), grpc.WithDiscovery(dis))
 	if err != nil {
 		panic(err)
 	}
