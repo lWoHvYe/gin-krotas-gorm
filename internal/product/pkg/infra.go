@@ -12,4 +12,5 @@ var InfraSet = wire.NewSet(
 	config.NewConfig,
 	logger.NewLogger,
 	db.NewDB,
+	config.NewDiscovery,
 )

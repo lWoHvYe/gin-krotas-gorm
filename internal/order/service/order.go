@@ -44,13 +44,13 @@ func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) 
 	// 2. 添加子事务：调用商品服务扣库存
 	// 注意：这里需要传入商品服务的 gRPC 全路径名
 	for _, item := range req.Items {
-		saga.Add(pbProduct.Product_ReduceStock_FullMethodName,
-			pbProduct.Product_CompensateStock_FullMethodName,
+		saga.Add("discovery:///product"+pbProduct.Product_ReduceStock_FullMethodName,
+			"discovery:///product"+pbProduct.Product_CompensateStock_FullMethodName,
 			&pbProduct.ReduceStockReq{OrderSn: orderSn, SkuId: int64(item.SkuId), Num: item.Num})
 	}
 	// 3. 添加子事务：调用本服务的创建订单接口
-	saga.Add(pb.Order_CreateOrderInner_FullMethodName,
-		pb.Order_CancelOrder_FullMethodName,
+	saga.Add("discovery:///order"+pb.Order_CreateOrderInner_FullMethodName,
+		"discovery:///order"+pb.Order_CancelOrder_FullMethodName,
 		req)
 
 	// 4. 提交事务

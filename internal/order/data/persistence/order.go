@@ -3,12 +3,11 @@ package persistence
 import (
 	pb "helloworld-go/api/product/v1"
 	"helloworld-go/internal/order/biz/model"
+	"helloworld-go/internal/order/pkg/grpcclient"
 
 	"context"
 
-	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/transport/grpc"
 )
 
 type OrderRepo struct {
@@ -16,12 +15,8 @@ type OrderRepo struct {
 	productClient pb.ProductClient // 注入远程客户端
 }
 
-func NewOrderRepo(data *Data, dis *etcd.Registry, logger log.Logger) *OrderRepo {
-	endpoint := "discovery:///" + pb.Product_ServiceDesc.ServiceName
-	conn, err := grpc.DialInsecure(context.Background(), grpc.WithEndpoint(endpoint), grpc.WithDiscovery(dis))
-	if err != nil {
-		panic(err)
-	}
+func NewOrderRepo(data *Data, factory *grpcclient.ConnFactory, logger log.Logger) *OrderRepo {
+	conn := factory.Get(pb.Product_ServiceDesc.ServiceName)
 	return &OrderRepo{
 		data:          data,
 		productClient: pb.NewProductClient(conn),

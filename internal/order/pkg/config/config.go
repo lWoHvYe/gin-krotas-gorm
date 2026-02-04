@@ -8,12 +8,12 @@ import (
 	cfg "github.com/go-kratos/kratos/contrib/config/etcd/v2"
 	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2/config"
-	clientv3 "go.etcd.io/etcd/client/v3"
+	etcdAPI "go.etcd.io/etcd/client/v3"
 )
 
 func NewConfig(flagconf string) (*conf.Bootstrap, error) {
 	// create an etcd client
-	client, err := clientv3.New(clientv3.Config{
+	client, err := etcdAPI.New(etcdAPI.Config{
 		Endpoints:   []string{"10.211.55.29:2379"},
 		DialTimeout: time.Second,
 	})
@@ -54,20 +54,15 @@ func NewConfig(flagconf string) (*conf.Bootstrap, error) {
 
 func NewDiscovery(conf *conf.Bootstrap) (*etcd.Registry, error) {
 	// new etcd client
-	client, err := clientv3.New(clientv3.Config{
-		Endpoints: []string{"10.211.55.29:2379"},
+	client, err := etcdAPI.New(etcdAPI.Config{
+		Endpoints: conf.Registry.Etcd.Endpoints,
 	})
 	if err != nil {
 		panic(err)
 	}
 	// new dis with etcd client
 	dis := etcd.New(client)
+	//defer client.Close()
 
-	// This Dial need to use DialInsecure() or use grpc.WithTransportCredentials in Dial option
-	//endpoint := "discovery:///provider"
-	//conn, err := grpc.Dial(context.Background(), grpc.WithEndpoint(endpoint), grpc.WithDiscovery(dis))
-	//if err != nil {
-	//	panic(err)
-	//}
 	return dis, err
 }
