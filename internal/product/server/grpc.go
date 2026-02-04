@@ -4,6 +4,7 @@ import (
 	productV1 "helloworld-go/api/product/v1"
 	"helloworld-go/internal/conf"
 	"helloworld-go/internal/product/service"
+	"net/url"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -24,6 +25,10 @@ func NewGRPCServer(cfg *conf.Bootstrap,
 	}
 	if cfg.Server.Grpc.Addr != "" {
 		opts = append(opts, grpc.Address(cfg.Server.Grpc.Addr))
+	}
+	if cfg.Server.Grpc.Endpoint != "" {
+		u, _ := url.Parse(cfg.Server.Grpc.Endpoint)
+		opts = append(opts, grpc.Endpoint(u))
 	}
 	if cfg.Server.Grpc.Timeout != nil {
 		opts = append(opts, grpc.Timeout(cfg.Server.Grpc.Timeout.AsDuration()))
