@@ -8,6 +8,7 @@ import (
 	pb "helloworld-go/api/product/v1"
 
 	"github.com/dtm-labs/client/dtmgrpc"
+	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
 )
 
@@ -55,7 +56,8 @@ func (s *ProductService) ReduceStock(ctx context.Context, req *pb.ReduceStockReq
 	// 获取屏障对象
 	barrier, err := dtmgrpc.BarrierFromGrpc(ctx)
 	if err != nil {
-		return nil, err
+		log.Errorf("Barrier init failed: %v", err)
+		return nil, err // 确保这里返回了错误，而不是 panic
 	}
 
 	// 在屏障内执行数据库操作

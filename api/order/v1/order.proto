@@ -20,6 +20,7 @@ service Order {
 
 // 下单请求
 message CreateOrderReq {
+  uint64 user_id = 5;
   string OrderSn = 1;
   uint32 address_id = 2 [(validate.rules).uint32.gt = 0]; // 收货地址ID
   string remark = 3; // 订单备注

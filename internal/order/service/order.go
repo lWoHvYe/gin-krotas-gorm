@@ -9,10 +9,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/dtm-labs/client/dtmgrpc"
-
 	pb "helloworld-go/api/order/v1"
 	pbProduct "helloworld-go/api/product/v1"
+
+	"github.com/dtm-labs/client/dtmgrpc"
+	"github.com/go-kratos/kratos/v2/log"
 )
 
 type OrderService struct {
@@ -26,6 +27,13 @@ func NewOrderService(or *persistence.OrderRepo, c *conf.Bootstrap) *OrderService
 }
 
 func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) (*pb.CreateOrderReply, error) {
+
+	defer func() {
+		if r := recover(); r != nil {
+			log.Errorf("Recovered from panic in OrderService: %v", r)
+		}
+	}()
+
 	gid := dtmgrpc.MustGenGid(s.dtmC.Address)
 
 	// 1. 构造 SAGA 事务
@@ -40,6 +48,8 @@ func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) 
 	// 生成订单号
 	orderSn = fmt.Sprintf("%d%06d", time.Now().Unix(), userId%1000)
 	req.OrderSn = orderSn
+	// 填充用户Id
+	req.UserId = userId
 
 	// 2. 添加子事务：调用商品服务扣库存
 	// 注意：这里需要传入商品服务的 gRPC 全路径名
@@ -63,8 +73,6 @@ func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) 
 }
 
 func (s *OrderService) CreateOrderInner(ctx context.Context, req *pb.CreateOrderReq) (*pb.CreateOrderReply, error) {
-	// 1. 获取当前用户 (从 JWT 中间件存入的 Context 获取)
-	userId := ctx.Value("userID").(uint64)
 
 	// 这个需要计算一下
 	var totalPayAmount float64
@@ -73,7 +81,7 @@ func (s *OrderService) CreateOrderInner(ctx context.Context, req *pb.CreateOrder
 	// C. 构建订单实体
 	orderEntity := &model.Order{
 		OrderSn:         req.OrderSn,
-		UserID:          int64(userId),
+		UserID:          int64(req.UserId),
 		TotalAmount:     319.0,
 		PayAmount:       99.0, // 示例数值
 		ReceiverName:    "张三",
