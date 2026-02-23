@@ -3,6 +3,7 @@ package persistence
 import (
 	"context"
 	"errors"
+	"fmt"
 	"helloworld-go/internal/product/biz/model"
 	"helloworld-go/internal/product/biz/query"
 
@@ -127,15 +128,15 @@ func (p *ProductRepo) CompensateStock(ctx context.Context, orderSn string, skuId
 func (p *ProductRepo) ReduceStockInTx(ctx context.Context, gtx *gorm.DB, orderSn string, skuId int64, num int32) error {
 	q := query.Use(gtx)
 	return q.Transaction(func(tx *query.Query) error {
-		if info, err := tx.StockLog.WithContext(ctx).Where(q.StockLog.ID.Eq(orderSn)).Delete(); err != nil {
-			return err
-		} else if info.RowsAffected == 0 {
-			return nil // duplicate call
+		// 1. 插入幂等记录，如果已存在则报错回滚（利用数据库唯一索引）
+		stockLogId := fmt.Sprintf("%s_%06d", orderSn, skuId) // 避免与其他业务的 stock log 冲突
+		if err := tx.StockLog.WithContext(ctx).Create(&model.StockLog{ID: stockLogId, SkuID: skuId, Num: num}); err != nil {
+			return errors.New("duplicate request")
 		}
 
 		_, err := tx.ProductSku.WithContext(ctx).
 			Where(q.ProductSku.ID.Eq(skuId)). // 这里需考虑并发更新问题
-			Update(q.ProductSku.Stock, gorm.Expr("stock + ?", num))
+			Update(q.ProductSku.Stock, gorm.Expr("stock - ?", num))
 		if err != nil {
 			return err
 		}
