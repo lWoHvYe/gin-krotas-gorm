@@ -69,7 +69,7 @@ func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) 
 		return nil, err
 	}
 
-	return &pb.CreateOrderReply{OrderSn: gid}, nil
+	return &pb.CreateOrderReply{OrderSn: orderSn}, nil
 }
 
 func (s *OrderService) CreateOrderInner(ctx context.Context, req *pb.CreateOrderReq) (*pb.CreateOrderReply, error) {
