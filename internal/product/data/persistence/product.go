@@ -8,6 +8,8 @@ import (
 	"helloworld-go/internal/product/biz/query"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 )
 
@@ -109,7 +111,8 @@ func (p *ProductRepo) CompensateStock(ctx context.Context, orderSn string, skuId
 	q := p.data.Q(ctx)
 
 	return q.Transaction(func(tx *query.Query) error {
-		if info, err := tx.StockLog.WithContext(ctx).Where(q.StockLog.ID.Eq(orderSn)).Delete(); err != nil {
+		stockLogId := fmt.Sprintf("%s_%06d", orderSn, skuId) // 避免与其他业务的 stock log 冲突
+		if info, err := tx.StockLog.WithContext(ctx).Where(q.StockLog.ID.Eq(stockLogId)).Delete(); err != nil {
 			return err
 		} else if info.RowsAffected == 0 {
 			return nil // duplicate call
@@ -134,11 +137,15 @@ func (p *ProductRepo) ReduceStockInTx(ctx context.Context, gtx *gorm.DB, orderSn
 			return errors.New("duplicate request")
 		}
 
-		_, err := tx.ProductSku.WithContext(ctx).
-			Where(q.ProductSku.ID.Eq(skuId)). // 这里需考虑并发更新问题
+		info, err := tx.ProductSku.WithContext(ctx).
+			Where(q.ProductSku.ID.Eq(skuId), q.ProductSku.Stock.Gte(int64(num))). // 这里需考虑并发更新问题
 			Update(q.ProductSku.Stock, gorm.Expr("stock - ?", num))
 		if err != nil {
 			return err
+		}
+		// 注意：RowsAffected 可能为 0，表示没有满足条件的记录（即库存不足），需要返回特定错误以触发事务回滚
+		if info.RowsAffected == 0 {
+			return status.Errorf(codes.Aborted, "stock not enough")
 		}
 		return nil
 	})
