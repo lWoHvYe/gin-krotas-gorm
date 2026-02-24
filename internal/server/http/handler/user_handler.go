@@ -6,8 +6,10 @@ import (
 	"helloworld-go/internal/service"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type UserHandler struct {
@@ -70,7 +72,14 @@ func (h *UserHandler) Login(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	claims := &utils.CustomClaims{BaseClaims: utils.BaseClaims{UID: u.Id, Username: u.Name, NickName: "power", AuthorityId: u.RoleId}}
+	claims := &utils.CustomClaims{
+		BaseClaims: utils.BaseClaims{UID: u.Id, Username: u.Name, NickName: "power", AuthorityId: u.RoleId},
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+			Issuer:    "kratos-auth",
+			Subject:   u.Name,
+		},
+	}
 	token, err := j.CreateToken(*claims)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})

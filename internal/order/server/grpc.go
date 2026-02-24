@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
+	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
@@ -22,6 +23,7 @@ func NewGRPCServer(cfg *conf.Bootstrap,
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
+			logging.Server(logger),
 			// 1. 注入 JWT 中间件
 			//jwt.Server(
 			//	func(token *jwtv5.Token) (interface{}, error) {
@@ -63,6 +65,7 @@ func NewGRPCServer(cfg *conf.Bootstrap,
 func NewWhiteListMatcher() selector.MatchFunc {
 	whiteList := make(map[string]struct{})
 	whiteList["/api.auth.v1.Auth/Login"] = struct{}{} // 这里的字符串是 Proto 定义的全名
+	whiteList["/api.auth.v1.Auth/Register"] = struct{}{}
 	return func(ctx context.Context, operation string) bool {
 		if _, ok := whiteList[operation]; ok {
 			return false // 返回 false 表示不执行该中间件
