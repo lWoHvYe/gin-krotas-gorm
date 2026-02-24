@@ -1,14 +1,18 @@
 package server
 
 import (
+	"context"
 	orderAPIV1 "helloworld-go/api/order/v1"
 	"helloworld-go/internal/conf"
 	"helloworld-go/internal/order/service"
 	"net/url"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
+	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+	jwtv5 "github.com/golang-jwt/jwt/v5"
 )
 
 // NewGRPCServer new a gRPC server.
@@ -18,6 +22,23 @@ func NewGRPCServer(cfg *conf.Bootstrap,
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
+			// 1. 注入 JWT 中间件
+			//jwt.Server(
+			//	func(token *jwtv5.Token) (interface{}, error) {
+			//		return []byte("lWoHvYe"), nil // auth.Key 是你的加密私钥
+			//	},
+			//	// 可选：指定排除不需要验证的路由（例如登录、注册）
+			//	jwt.WithSigningMethod(jwtv5.SigningMethodHS256),
+			//),
+			selector.Server(
+				jwt.Server(
+					func(token *jwtv5.Token) (interface{}, error) {
+						return []byte("lWoHvYe"), nil // auth.Key 是你的加密私钥
+					},
+					// 可选：指定排除不需要验证的路由（例如登录、注册）
+					jwt.WithSigningMethod(jwtv5.SigningMethodHS256),
+				),
+			).Match(NewWhiteListMatcher()).Build(),
 		),
 	}
 	if cfg.Server.Grpc.Network != "" {
@@ -36,4 +57,16 @@ func NewGRPCServer(cfg *conf.Bootstrap,
 	srv := grpc.NewServer(opts...)
 	orderAPIV1.RegisterOrderServer(srv, order)
 	return srv
+}
+
+// NewWhiteListMatcher 处理白名单（跳过验证）
+func NewWhiteListMatcher() selector.MatchFunc {
+	whiteList := make(map[string]struct{})
+	whiteList["/api.auth.v1.Auth/Login"] = struct{}{} // 这里的字符串是 Proto 定义的全名
+	return func(ctx context.Context, operation string) bool {
+		if _, ok := whiteList[operation]; ok {
+			return false // 返回 false 表示不执行该中间件
+		}
+		return true
+	}
 }
