@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
+	"github.com/go-kratos/kratos/v2/middleware/circuitbreaker"
 	kratosgrpc "github.com/go-kratos/kratos/v2/transport/grpc"
 	jwtv5 "github.com/golang-jwt/jwt/v5"
 	"google.golang.org/grpc"
@@ -37,9 +38,12 @@ func (f *ConnFactory) Get(service string) *grpc.ClientConn {
 		kratosgrpc.WithEndpoint("discovery:///"+service),
 		kratosgrpc.WithDiscovery(f.dis),
 		kratosgrpc.WithMiddleware(
+			// Authentication
 			jwt.Client(func(token *jwtv5.Token) (interface{}, error) {
 				return []byte("lWoHvYe"), nil
 			}),
+			// Circuit Breaker
+			circuitbreaker.Client(),
 		),
 	)
 	if err != nil {

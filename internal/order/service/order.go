@@ -16,7 +16,6 @@ import (
 
 	"github.com/dtm-labs/client/dtmgrpc"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 )
 
 type OrderService struct {
@@ -42,18 +41,7 @@ func (s *OrderService) CreateOrder(ctx context.Context, req *pb.CreateOrderReq) 
 	// 1. 构造 SAGA 事务
 	saga := dtmgrpc.NewSagaGrpc(s.dtmC.Address, gid)
 
-	var userId uint64
-
-	// Kratos grpc auth middleware
-	if claims, ok := jwt.FromContext(ctx); ok {
-		// 强制断言为你定义的类型
-		c := claims.(utils.CustomClaims)
-		userId = c.UID
-	} else {
-		// or http handler
-		// 1. 获取当前用户 (从 JWT 中间件存入的 Context 获取)
-		userId = ctx.Value("userID").(uint64)
-	}
+	userId := utils.GetLoginUserId(ctx)
 
 	var orderSn string
 
