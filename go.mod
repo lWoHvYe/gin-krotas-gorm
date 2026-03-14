@@ -9,8 +9,8 @@ require (
 	github.com/dtm-labs/driver-kratos v0.0.9
 	github.com/envoyproxy/protoc-gen-validate v1.3.0
 	github.com/gin-gonic/gin v1.12.0
-	github.com/go-kratos/kratos/contrib/config/etcd/v2 v2.0.0-20260105075216-c7a58ff59f80
-	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20260105075216-c7a58ff59f80
+	github.com/go-kratos/kratos/contrib/config/etcd/v2 v2.0.0-20260312121050-e36259de52a8
+	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20260312121050-e36259de52a8
 	github.com/go-kratos/kratos/v2 v2.9.2
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/wire v0.7.0
@@ -51,7 +51,7 @@ require (
 	github.com/glebarez/go-sqlite v1.22.0 // indirect
 	github.com/glebarez/sqlite v1.11.0 // indirect
 	github.com/go-kratos/aegis v0.2.0 // indirect
-	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20260105075216-c7a58ff59f80 // indirect
+	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20260312121050-e36259de52a8 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/form/v4 v4.3.0 // indirect
