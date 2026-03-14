@@ -1,9 +1,9 @@
 package pkg
 
 import (
-	"helloworld-go/internal/pkg/logger"
-	"helloworld-go/internal/product/data/db"
-	"helloworld-go/internal/product/pkg/config"
+	"gin-krotas-gorm/internal/pkg/logger"
+	"gin-krotas-gorm/internal/product/data/db"
+	"gin-krotas-gorm/internal/product/pkg/config"
 
 	"github.com/google/wire"
 )

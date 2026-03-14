@@ -5,7 +5,7 @@ package api.product.v1;
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 
-option go_package = "helloworld-go/api/product/v1;v1";
+option go_package = "gin-krotas-gorm/api/product/v1;v1";
 
 service Product {
   // 获取商品详情（包含 SPU 和 SKU 列表）

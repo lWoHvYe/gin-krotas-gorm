@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	v1 "helloworld-go/api/helloworld/v1"
-	"helloworld-go/internal/biz"
+	v1 "gin-krotas-gorm/api/helloworld/v1"
+	"gin-krotas-gorm/internal/biz"
 )
 
 // GreeterService is a greeter service.

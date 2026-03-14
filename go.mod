@@ -1,4 +1,4 @@
-module helloworld-go
+module gin-krotas-gorm
 
 go 1.25.5
 

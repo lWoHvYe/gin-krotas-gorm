@@ -1,9 +1,9 @@
 package persistence
 
 import (
-	pb "helloworld-go/api/product/v1"
-	"helloworld-go/internal/order/biz/model"
-	"helloworld-go/internal/order/pkg/grpcclient"
+	pb "gin-krotas-gorm/api/product/v1"
+	"gin-krotas-gorm/internal/order/biz/model"
+	"gin-krotas-gorm/internal/order/pkg/grpcclient"
 
 	"context"
 

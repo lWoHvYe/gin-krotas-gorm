@@ -3,7 +3,7 @@ package main
 
 import (
 	"flag"
-	"helloworld-go/internal/bootstrap"
+	"gin-krotas-gorm/internal/bootstrap"
 	"os"
 
 	"github.com/go-kratos/kratos/v2/log"

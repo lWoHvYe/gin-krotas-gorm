@@ -2,8 +2,8 @@ package persistence
 
 import (
 	"context"
-	"helloworld-go/internal/biz/query"
-	"helloworld-go/internal/conf"
+	"gin-krotas-gorm/internal/biz/query"
+	"gin-krotas-gorm/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"

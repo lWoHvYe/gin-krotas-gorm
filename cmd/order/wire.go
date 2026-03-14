@@ -6,10 +6,10 @@
 package main
 
 import (
-	"helloworld-go/internal/order/data"
-	"helloworld-go/internal/order/pkg"
-	"helloworld-go/internal/order/server"
-	"helloworld-go/internal/order/service"
+	"gin-krotas-gorm/internal/order/data"
+	"gin-krotas-gorm/internal/order/pkg"
+	"gin-krotas-gorm/internal/order/server"
+	"gin-krotas-gorm/internal/order/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

@@ -3,16 +3,16 @@ package service
 import (
 	"context"
 	"fmt"
-	"helloworld-go/internal/conf"
-	"helloworld-go/internal/order/biz/model"
-	"helloworld-go/internal/order/data/persistence"
+	"gin-krotas-gorm/internal/conf"
+	"gin-krotas-gorm/internal/order/biz/model"
+	"gin-krotas-gorm/internal/order/data/persistence"
 	"strconv"
 	"time"
 
-	pb "helloworld-go/api/order/v1"
-	pbProduct "helloworld-go/api/product/v1"
+	pb "gin-krotas-gorm/api/order/v1"
+	pbProduct "gin-krotas-gorm/api/product/v1"
 
-	"helloworld-go/internal/pkg/utils" // 替换为你的路径
+	"gin-krotas-gorm/internal/pkg/utils" // 替换为你的路径
 
 	"github.com/dtm-labs/client/dtmgrpc"
 	"github.com/go-kratos/kratos/v2/log"

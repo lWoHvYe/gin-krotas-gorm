@@ -3,7 +3,7 @@ package biz
 import (
 	"context"
 
-	v1 "helloworld-go/api/helloworld/v1"
+	v1 "gin-krotas-gorm/api/helloworld/v1"
 
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"

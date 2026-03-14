@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"helloworld-go/internal/pkg/utils"
+	"gin-krotas-gorm/internal/pkg/utils"
 	"net/http"
 	"strconv"
 

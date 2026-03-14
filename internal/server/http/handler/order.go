@@ -1,8 +1,8 @@
 package handler
 
 import (
-	pb "helloworld-go/api/order/v1"
-	"helloworld-go/internal/service"
+	pb "gin-krotas-gorm/api/order/v1"
+	"gin-krotas-gorm/internal/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

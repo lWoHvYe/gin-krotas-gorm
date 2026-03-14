@@ -2,7 +2,7 @@
 package db
 
 import (
-	"helloworld-go/internal/conf"
+	"gin-krotas-gorm/internal/conf"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

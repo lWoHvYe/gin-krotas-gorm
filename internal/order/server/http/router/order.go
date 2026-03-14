@@ -1,7 +1,7 @@
 package router
 
 import (
-	"helloworld-go/internal/order/server/http/handler"
+	"gin-krotas-gorm/internal/order/server/http/handler"
 
 	"github.com/gin-gonic/gin"
 )

@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-	"helloworld-go/internal/data/persistence"
+	"gin-krotas-gorm/internal/data/persistence"
 
-	pb "helloworld-go/api/product/v1"
+	pb "gin-krotas-gorm/api/product/v1"
 )
 
 type ProductService struct {

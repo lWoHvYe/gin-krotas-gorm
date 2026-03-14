@@ -1,7 +1,7 @@
 package config
 
 import (
-	"helloworld-go/internal/conf"
+	"gin-krotas-gorm/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"

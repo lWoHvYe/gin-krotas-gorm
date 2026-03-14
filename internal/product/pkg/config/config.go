@@ -1,7 +1,7 @@
 package config
 
 import (
-	"helloworld-go/internal/conf"
+	"gin-krotas-gorm/internal/conf"
 	"log"
 	"time"
 

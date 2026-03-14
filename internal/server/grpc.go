@@ -1,12 +1,12 @@
 package server
 
 import (
-	HelloWorldV1 "helloworld-go/api/helloworld/v1"
-	orderAPIV1 "helloworld-go/api/order/v1"
-	productV1 "helloworld-go/api/product/v1"
-	UserAPIV1 "helloworld-go/api/user/v1"
-	"helloworld-go/internal/conf"
-	"helloworld-go/internal/service"
+	HelloWorldV1 "gin-krotas-gorm/api/helloworld/v1"
+	orderAPIV1 "gin-krotas-gorm/api/order/v1"
+	productV1 "gin-krotas-gorm/api/product/v1"
+	UserAPIV1 "gin-krotas-gorm/api/user/v1"
+	"gin-krotas-gorm/internal/conf"
+	"gin-krotas-gorm/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"

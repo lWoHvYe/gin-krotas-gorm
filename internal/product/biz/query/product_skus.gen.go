@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"helloworld-go/internal/product/biz/model"
+	"gin-krotas-gorm/internal/product/biz/model"
 )
 
 func newProductSku(db *gorm.DB, opts ...gen.DOOption) productSku {

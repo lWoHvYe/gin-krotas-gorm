@@ -1,8 +1,8 @@
 package router
 
 import (
-	"helloworld-go/internal/server/http/handler"
-	"helloworld-go/internal/server/middleware"
+	"gin-krotas-gorm/internal/server/http/handler"
+	"gin-krotas-gorm/internal/server/middleware"
 
 	"github.com/casbin/casbin/v3"
 	"github.com/gin-gonic/gin"

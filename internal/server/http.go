@@ -1,11 +1,11 @@
 package server
 
 import (
-	"helloworld-go/internal/conf"
-	httpServerHandler "helloworld-go/internal/server/http/handler"
-	"helloworld-go/internal/server/http/router"
-	"helloworld-go/internal/server/middleware"
-	"helloworld-go/internal/service"
+	"gin-krotas-gorm/internal/conf"
+	httpServerHandler "gin-krotas-gorm/internal/server/http/handler"
+	"gin-krotas-gorm/internal/server/http/router"
+	"gin-krotas-gorm/internal/server/middleware"
+	"gin-krotas-gorm/internal/service"
 
 	"github.com/casbin/casbin/v3"
 	"github.com/gin-gonic/gin"

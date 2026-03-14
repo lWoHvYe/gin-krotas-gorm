@@ -1,10 +1,10 @@
 package server
 
 import (
-	"helloworld-go/internal/conf"
-	httpServerHandler "helloworld-go/internal/order/server/http/handler"
-	"helloworld-go/internal/order/server/http/router"
-	"helloworld-go/internal/order/server/middleware"
+	"gin-krotas-gorm/internal/conf"
+	httpServerHandler "gin-krotas-gorm/internal/order/server/http/handler"
+	"gin-krotas-gorm/internal/order/server/http/router"
+	"gin-krotas-gorm/internal/order/server/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/log"

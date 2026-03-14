@@ -3,13 +3,13 @@ package service
 import (
 	"context"
 	"fmt"
-	"helloworld-go/internal/biz"
-	"helloworld-go/internal/biz/model"
-	"helloworld-go/internal/data/persistence"
+	"gin-krotas-gorm/internal/biz"
+	"gin-krotas-gorm/internal/biz/model"
+	"gin-krotas-gorm/internal/data/persistence"
 	"strconv"
 	"time"
 
-	pb "helloworld-go/api/order/v1"
+	pb "gin-krotas-gorm/api/order/v1"
 )
 
 type OrderService struct {

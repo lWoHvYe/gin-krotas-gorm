@@ -1,7 +1,7 @@
 package server
 
 import (
-	httpServerHandler "helloworld-go/internal/order/server/http/handler"
+	httpServerHandler "gin-krotas-gorm/internal/order/server/http/handler"
 
 	"github.com/google/wire"
 )

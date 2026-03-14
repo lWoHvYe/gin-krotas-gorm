@@ -1,8 +1,8 @@
 package data
 
 import (
-	"helloworld-go/internal/biz"
-	"helloworld-go/internal/data/persistence"
+	"gin-krotas-gorm/internal/biz"
+	"gin-krotas-gorm/internal/data/persistence"
 
 	"github.com/google/wire"
 )

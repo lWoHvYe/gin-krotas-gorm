@@ -3,8 +3,8 @@ package persistence
 
 import (
 	"context"
-	"helloworld-go/internal/biz/model"
-	biz "helloworld-go/internal/biz/user"
+	"gin-krotas-gorm/internal/biz/model"
+	biz "gin-krotas-gorm/internal/biz/user"
 	"strconv"
 
 	"github.com/casbin/casbin/v3"

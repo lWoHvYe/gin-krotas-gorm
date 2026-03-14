@@ -1,9 +1,9 @@
 package handler
 
 import (
-	pb "helloworld-go/api/user/v1"
-	"helloworld-go/internal/pkg/utils"
-	"helloworld-go/internal/service"
+	pb "gin-krotas-gorm/api/user/v1"
+	"gin-krotas-gorm/internal/pkg/utils"
+	"gin-krotas-gorm/internal/service"
 	"net/http"
 	"strconv"
 	"time"

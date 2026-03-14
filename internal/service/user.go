@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"errors"
-	pb "helloworld-go/api/user/v1"
-	"helloworld-go/internal/biz/model"
-	"helloworld-go/internal/data/persistence"
+	pb "gin-krotas-gorm/api/user/v1"
+	"gin-krotas-gorm/internal/biz/model"
+	"gin-krotas-gorm/internal/data/persistence"
 	"strconv"
 )
 

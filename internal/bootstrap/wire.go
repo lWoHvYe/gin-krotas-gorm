@@ -5,11 +5,11 @@
 package bootstrap
 
 import (
-	"helloworld-go/internal/biz"
-	"helloworld-go/internal/data"
-	"helloworld-go/internal/pkg"
-	"helloworld-go/internal/server"
-	"helloworld-go/internal/service"
+	"gin-krotas-gorm/internal/biz"
+	"gin-krotas-gorm/internal/data"
+	"gin-krotas-gorm/internal/pkg"
+	"gin-krotas-gorm/internal/server"
+	"gin-krotas-gorm/internal/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
