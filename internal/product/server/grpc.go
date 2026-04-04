@@ -1,9 +1,9 @@
 package server
 
 import (
-	productV1 "gin-krotas-gorm/api/product/v1"
-	"gin-krotas-gorm/internal/conf"
-	"gin-krotas-gorm/internal/product/service"
+	productV1 "gin-kratos-gorm/api/product/v1"
+	"gin-kratos-gorm/internal/conf"
+	"gin-kratos-gorm/internal/product/service"
 	"net/url"
 
 	"github.com/go-kratos/kratos/v2/log"

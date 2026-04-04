@@ -5,7 +5,7 @@ package api.order.v1;
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 
-option go_package = "gin-krotas-gorm/api/order/v1;v1";
+option go_package = "gin-kratos-gorm/api/order/v1;v1";
 
 service Order {
   // 创建订单 (下单)

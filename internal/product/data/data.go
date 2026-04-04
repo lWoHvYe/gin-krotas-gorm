@@ -1,8 +1,8 @@
 package data
 
 import (
-	"gin-krotas-gorm/internal/product/biz"
-	"gin-krotas-gorm/internal/product/data/persistence"
+	"gin-kratos-gorm/internal/product/biz"
+	"gin-kratos-gorm/internal/product/data/persistence"
 
 	"github.com/google/wire"
 )

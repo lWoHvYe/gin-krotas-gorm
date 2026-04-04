@@ -5,11 +5,11 @@
 package bootstrap
 
 import (
-	"gin-krotas-gorm/internal/biz"
-	"gin-krotas-gorm/internal/data"
-	"gin-krotas-gorm/internal/pkg"
-	"gin-krotas-gorm/internal/server"
-	"gin-krotas-gorm/internal/service"
+	"gin-kratos-gorm/internal/biz"
+	"gin-kratos-gorm/internal/data"
+	"gin-kratos-gorm/internal/pkg"
+	"gin-kratos-gorm/internal/server"
+	"gin-kratos-gorm/internal/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

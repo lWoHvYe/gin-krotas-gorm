@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"errors"
-	pb "gin-krotas-gorm/api/user/v1"
-	"gin-krotas-gorm/internal/biz/model"
-	"gin-krotas-gorm/internal/data/persistence"
+	pb "gin-kratos-gorm/api/user/v1"
+	"gin-kratos-gorm/internal/biz/model"
+	"gin-kratos-gorm/internal/data/persistence"
 	"strconv"
 )
 

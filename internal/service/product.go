@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
-	"gin-krotas-gorm/internal/data/persistence"
+	"gin-kratos-gorm/internal/data/persistence"
 
-	pb "gin-krotas-gorm/api/product/v1"
+	pb "gin-kratos-gorm/api/product/v1"
 )
 
 type ProductService struct {

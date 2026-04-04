@@ -1,7 +1,7 @@
 package server
 
 import (
-	httpServerHandler "gin-krotas-gorm/internal/order/server/http/handler"
+	httpServerHandler "gin-kratos-gorm/internal/order/server/http/handler"
 
 	"github.com/google/wire"
 )

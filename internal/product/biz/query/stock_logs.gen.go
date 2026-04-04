@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"gin-krotas-gorm/internal/product/biz/model"
+	"gin-kratos-gorm/internal/product/biz/model"
 )
 
 func newStockLog(db *gorm.DB, opts ...gen.DOOption) stockLog {

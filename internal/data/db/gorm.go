@@ -2,7 +2,7 @@
 package db
 
 import (
-	"gin-krotas-gorm/internal/conf"
+	"gin-kratos-gorm/internal/conf"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

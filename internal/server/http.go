@@ -1,11 +1,11 @@
 package server
 
 import (
-	"gin-krotas-gorm/internal/conf"
-	httpServerHandler "gin-krotas-gorm/internal/server/http/handler"
-	"gin-krotas-gorm/internal/server/http/router"
-	"gin-krotas-gorm/internal/server/middleware"
-	"gin-krotas-gorm/internal/service"
+	"gin-kratos-gorm/internal/conf"
+	httpServerHandler "gin-kratos-gorm/internal/server/http/handler"
+	"gin-kratos-gorm/internal/server/http/router"
+	"gin-kratos-gorm/internal/server/middleware"
+	"gin-kratos-gorm/internal/service"
 
 	"github.com/casbin/casbin/v3"
 	"github.com/gin-gonic/gin"

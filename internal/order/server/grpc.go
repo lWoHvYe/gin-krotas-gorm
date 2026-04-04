@@ -2,9 +2,9 @@ package server
 
 import (
 	"context"
-	orderAPIV1 "gin-krotas-gorm/api/order/v1"
-	"gin-krotas-gorm/internal/conf"
-	"gin-krotas-gorm/internal/order/service"
+	orderAPIV1 "gin-kratos-gorm/api/order/v1"
+	"gin-kratos-gorm/internal/conf"
+	"gin-kratos-gorm/internal/order/service"
 	"net/url"
 
 	"github.com/go-kratos/kratos/v2/log"

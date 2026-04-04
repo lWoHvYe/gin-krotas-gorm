@@ -1,10 +1,10 @@
 package server
 
 import (
-	"gin-krotas-gorm/internal/conf"
-	httpServerHandler "gin-krotas-gorm/internal/order/server/http/handler"
-	"gin-krotas-gorm/internal/order/server/http/router"
-	"gin-krotas-gorm/internal/order/server/middleware"
+	"gin-kratos-gorm/internal/conf"
+	httpServerHandler "gin-kratos-gorm/internal/order/server/http/handler"
+	"gin-kratos-gorm/internal/order/server/http/router"
+	"gin-kratos-gorm/internal/order/server/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/log"

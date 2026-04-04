@@ -3,13 +3,13 @@ package service
 import (
 	"context"
 	"fmt"
-	"gin-krotas-gorm/internal/biz"
-	"gin-krotas-gorm/internal/biz/model"
-	"gin-krotas-gorm/internal/data/persistence"
+	"gin-kratos-gorm/internal/biz"
+	"gin-kratos-gorm/internal/biz/model"
+	"gin-kratos-gorm/internal/data/persistence"
 	"strconv"
 	"time"
 
-	pb "gin-krotas-gorm/api/order/v1"
+	pb "gin-kratos-gorm/api/order/v1"
 )
 
 type OrderService struct {

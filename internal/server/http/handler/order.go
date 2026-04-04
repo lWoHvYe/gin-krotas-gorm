@@ -1,8 +1,8 @@
 package handler
 
 import (
-	pb "gin-krotas-gorm/api/order/v1"
-	"gin-krotas-gorm/internal/service"
+	pb "gin-kratos-gorm/api/order/v1"
+	"gin-kratos-gorm/internal/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

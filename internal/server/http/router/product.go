@@ -1,7 +1,7 @@
 package router
 
 import (
-	"gin-krotas-gorm/internal/server/http/handler"
+	"gin-kratos-gorm/internal/server/http/handler"
 
 	"github.com/casbin/casbin/v3"
 	"github.com/gin-gonic/gin"

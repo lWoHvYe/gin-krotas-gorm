@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"gin-krotas-gorm/internal/product/biz/model"
-	"gin-krotas-gorm/internal/product/biz/query"
+	"gin-kratos-gorm/internal/product/biz/model"
+	"gin-kratos-gorm/internal/product/biz/query"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"google.golang.org/grpc/codes"

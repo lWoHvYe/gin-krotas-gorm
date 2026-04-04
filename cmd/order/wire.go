@@ -6,10 +6,10 @@
 package main
 
 import (
-	"gin-krotas-gorm/internal/order/data"
-	"gin-krotas-gorm/internal/order/pkg"
-	"gin-krotas-gorm/internal/order/server"
-	"gin-krotas-gorm/internal/order/service"
+	"gin-kratos-gorm/internal/order/data"
+	"gin-kratos-gorm/internal/order/pkg"
+	"gin-kratos-gorm/internal/order/server"
+	"gin-kratos-gorm/internal/order/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

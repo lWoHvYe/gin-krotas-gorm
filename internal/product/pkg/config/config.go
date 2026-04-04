@@ -1,7 +1,7 @@
 package config
 
 import (
-	"gin-krotas-gorm/internal/conf"
+	"gin-kratos-gorm/internal/conf"
 	"log"
 	"time"
 

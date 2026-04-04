@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"database/sql"
-	"gin-krotas-gorm/internal/product/data/persistence"
+	"gin-kratos-gorm/internal/product/data/persistence"
 
-	pb "gin-krotas-gorm/api/product/v1"
+	pb "gin-kratos-gorm/api/product/v1"
 
 	"github.com/dtm-labs/client/dtmgrpc"
 	"github.com/go-kratos/kratos/v2/log"

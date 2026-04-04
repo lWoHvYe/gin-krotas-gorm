@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"errors"
-	"gin-krotas-gorm/internal/pkg/utils" // 替换为你的路径
+	"gin-kratos-gorm/internal/pkg/utils" // 替换为你的路径
 	"net/http"
 	"strings"
 

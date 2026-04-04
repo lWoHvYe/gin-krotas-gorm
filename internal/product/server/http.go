@@ -1,7 +1,7 @@
 package server
 
 import (
-	"gin-krotas-gorm/internal/conf"
+	"gin-kratos-gorm/internal/conf"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-kratos/kratos/v2/log"

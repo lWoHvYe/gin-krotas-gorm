@@ -3,8 +3,8 @@ package data
 import (
 	"context"
 
-	"gin-krotas-gorm/internal/biz"
-	"gin-krotas-gorm/internal/data/persistence"
+	"gin-kratos-gorm/internal/biz"
+	"gin-kratos-gorm/internal/data/persistence"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

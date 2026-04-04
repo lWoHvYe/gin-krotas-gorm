@@ -2,7 +2,7 @@ package persistence
 
 import (
 	"context"
-	"gin-krotas-gorm/internal/biz/model"
+	"gin-kratos-gorm/internal/biz/model"
 
 	"github.com/go-kratos/kratos/v2/log"
 )

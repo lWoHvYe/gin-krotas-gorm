@@ -3,8 +3,8 @@ package persistence
 
 import (
 	"context"
-	"gin-krotas-gorm/internal/biz/model"
-	biz "gin-krotas-gorm/internal/biz/user"
+	"gin-kratos-gorm/internal/biz/model"
+	biz "gin-kratos-gorm/internal/biz/user"
 	"strconv"
 
 	"github.com/casbin/casbin/v3"

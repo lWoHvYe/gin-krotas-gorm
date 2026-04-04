@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"gin-krotas-gorm/internal/order/biz/model"
+	"gin-kratos-gorm/internal/order/biz/model"
 )
 
 func newOrderItem(db *gorm.DB, opts ...gen.DOOption) orderItem {

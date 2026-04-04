@@ -3,16 +3,16 @@ package service
 import (
 	"context"
 	"fmt"
-	"gin-krotas-gorm/internal/conf"
-	"gin-krotas-gorm/internal/order/biz/model"
-	"gin-krotas-gorm/internal/order/data/persistence"
+	"gin-kratos-gorm/internal/conf"
+	"gin-kratos-gorm/internal/order/biz/model"
+	"gin-kratos-gorm/internal/order/data/persistence"
 	"strconv"
 	"time"
 
-	pb "gin-krotas-gorm/api/order/v1"
-	pbProduct "gin-krotas-gorm/api/product/v1"
+	pb "gin-kratos-gorm/api/order/v1"
+	pbProduct "gin-kratos-gorm/api/product/v1"
 
-	"gin-krotas-gorm/internal/pkg/utils" // 替换为你的路径
+	"gin-kratos-gorm/internal/pkg/utils" // 替换为你的路径
 
 	"github.com/dtm-labs/client/dtmgrpc"
 	"github.com/go-kratos/kratos/v2/log"

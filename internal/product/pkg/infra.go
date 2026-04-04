@@ -1,9 +1,9 @@
 package pkg
 
 import (
-	"gin-krotas-gorm/internal/pkg/logger"
-	"gin-krotas-gorm/internal/product/data/db"
-	"gin-krotas-gorm/internal/product/pkg/config"
+	"gin-kratos-gorm/internal/pkg/logger"
+	"gin-kratos-gorm/internal/product/data/db"
+	"gin-kratos-gorm/internal/product/pkg/config"
 
 	"github.com/google/wire"
 )

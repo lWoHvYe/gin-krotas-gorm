@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"gin-krotas-gorm/internal/biz/model"
+	"gin-kratos-gorm/internal/biz/model"
 )
 
 func newRole(db *gorm.DB, opts ...gen.DOOption) role {

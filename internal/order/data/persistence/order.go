@@ -1,9 +1,9 @@
 package persistence
 
 import (
-	pb "gin-krotas-gorm/api/product/v1"
-	"gin-krotas-gorm/internal/order/biz/model"
-	"gin-krotas-gorm/internal/order/pkg/grpcclient"
+	pb "gin-kratos-gorm/api/product/v1"
+	"gin-kratos-gorm/internal/order/biz/model"
+	"gin-kratos-gorm/internal/order/pkg/grpcclient"
 
 	"context"
 

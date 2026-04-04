@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"gin-krotas-gorm/internal/pkg/utils"
+	"gin-kratos-gorm/internal/pkg/utils"
 	"net/http"
 	"strconv"
 
